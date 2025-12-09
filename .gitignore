@@ -34,7 +34,9 @@
 .vs
 x64/
 *.bak
+assembly.asmt
 
+build
 cmake-build-debug
 .idea
 *.7z
@@ -44,3 +46,5 @@ BungeeOrig/
 *.csv#
 temp/
 *.mp4
+/testapp/draggingBackhoe.log
+/testapp/runPreDragBackhoe.asmt
