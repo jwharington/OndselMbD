@@ -6,7 +6,7 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
-#include "OrbitAngleZIeqcJeqc.h"
+#include "OrbitAnglezIeqcJeqc.h"
 #include "DispCompIeqcJeqcIe.h"
 
 using namespace MbD;

@@ -61,7 +61,7 @@ namespace MbD {
         void runVelICKine();
         void runAccICKine();
         void partsJointsMotionsLimitsDo(const std::function <void(std::shared_ptr<Item>)>& f);
-        void logString(const std::string& str);
+        void logString(const std::string& str) override;
         std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts();
         std::shared_ptr<std::vector<std::shared_ptr<LimitIJ>>> limits();
         //std::shared_ptr<std::vector<ContactEndFrame>> contactEndFrames();

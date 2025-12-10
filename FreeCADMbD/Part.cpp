@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "Part.h"
 #include "PartFrame.h"
 #include "System.h"
@@ -14,7 +14,6 @@
 #include "FullColumn.h"
 #include "FullMatrix.h"
 #include "DiagonalMatrix.h"
-
 
 using namespace MbD;
 
@@ -25,7 +24,7 @@ std::shared_ptr<Part> Part::With()
     return inst;
 }
 
-std::shared_ptr<Part> Part::With(const std::string& str)
+std::shared_ptr<Part> Part::With(const std::string &str)
 {
     auto inst = std::make_shared<Part>(str);
     inst->initialize();
@@ -41,7 +40,7 @@ void Part::initialize()
     ppTpEpEdot = FullMatrix<double>::With(4, 4);
 }
 
-System* Part::root()
+System *Part::root()
 {
     return system;
 }
@@ -49,10 +48,12 @@ System* Part::root()
 void Part::initializeLocally()
 {
     partFrame->initializeLocally();
-    if (m > 0) {
+    if (m > 0)
+    {
         mX = DiagonalMatrix<double>::With(3, m);
     }
-    else {
+    else
+    {
         mX = DiagonalMatrix<double>::With(3, 0.0);
     }
 }
@@ -62,39 +63,48 @@ void Part::initializeGlobally()
     partFrame->initializeGlobally();
 }
 
-void Part::setqX(FColDsptr x) const {
+void Part::setqX(FColDsptr x) const
+{
     partFrame->setqX(x);
 }
 
-FColDsptr Part::getqX() const {
+FColDsptr Part::getqX() const
+{
     return partFrame->getqX();
 }
 
-void Part::setaAap(FMatDsptr mat) {
+void Part::setaAap(FMatDsptr mat)
+{
     partFrame->setaAap(mat);
 }
 
-void Part::setqE(FColDsptr x) {
+void Part::setqE(FColDsptr x)
+{
     partFrame->setqE(x);
 }
 
-FColDsptr Part::getqE() {
+FColDsptr Part::getqE()
+{
     return partFrame->getqE();
 }
 
-void Part::setqXdot(FColDsptr x) {
+void Part::setqXdot(FColDsptr x)
+{
     partFrame->setqXdot(x);
 }
 
-FColDsptr Part::getqXdot() {
+FColDsptr Part::getqXdot()
+{
     return partFrame->getqXdot();
 }
 
-void Part::setomeOpO(FColDsptr x) {
+void Part::setomeOpO(FColDsptr x)
+{
     partFrame->setomeOpO(x);
 }
 
-FColDsptr Part::getomeOpO() {
+FColDsptr Part::getomeOpO()
+{
     return partFrame->getomeOpO();
 }
 
@@ -170,8 +180,8 @@ FColDsptr Part::qXddot()
 
 void Part::qEddot(FColDsptr x)
 {
-    //ToDo: Should store EulerParametersDDot
-    //ToDo: Need alpOpO too
+    // ToDo: Should store EulerParametersDDot
+    // ToDo: Need alpOpO too
     partFrame->qEddot = x;
 }
 
@@ -190,7 +200,7 @@ FColDsptr Part::alpOpO()
     return partFrame->alpOpO();
 }
 
-void Part::setSystem(System* sys)
+void Part::setSystem(System *sys)
 {
     system = sys;
 }
@@ -243,7 +253,6 @@ void Part::iqX(size_t eqnNo)
 void Part::iqE(size_t eqnNo)
 {
     partFrame->iqE = eqnNo;
-
 }
 
 void Part::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
@@ -281,12 +290,18 @@ void Part::fillqsuWeights(DiagMatDsptr diagMat)
     double maxw = 1.0e6;
     auto wqX = DiagonalMatrix<double>::With(3);
     auto wqE = DiagonalMatrix<double>::With(4);
-    if (mMax == 0) { mMax = 1.0; }
+    if (mMax == 0)
+    {
+        mMax = 1.0;
+    }
     for (size_t i = 0; i < 3; i++)
     {
         wqX->at(i) = (maxw * m / mMax) + minw;
     }
-    if (aJiMax == 0) { aJiMax = 1.0; }
+    if (aJiMax == 0)
+    {
+        aJiMax = 1.0;
+    }
     for (size_t i = 0; i < 3; i++)
     {
         auto aJi = aJ->at(i);
@@ -334,11 +349,12 @@ void Part::fillqsudotWeights(DiagMatDsptr diagMat)
     //"They are not set to zero because inertialess part may be underconstrained."
     //"wqEdot(4) = 0.0d is ok because there is always the euler parameter constraint."
 
-        //| mMax aJiMax maxInertia minw maxw aJi wqXdot wqEdot |
+    //| mMax aJiMax maxInertia minw maxw aJi wqXdot wqEdot |
     auto mMax = root()->maximumMass();
     auto aJiMax = root()->maximumMomentOfInertia();
     double maxInertia = std::max(mMax, aJiMax);
-    if (maxInertia == 0) maxInertia = 1.0;
+    if (maxInertia == 0)
+        maxInertia = 1.0;
     double minw = 1.0e-12 * maxInertia;
     double maxw = maxInertia;
     auto wqXdot = DiagonalMatrix<double>::With(3);
@@ -492,7 +508,7 @@ void Part::calcmEdot()
 void Part::calcpTpE()
 {
     //"pTpE is a column vector."
-    auto& qEdot = partFrame->qEdot;
+    auto &qEdot = partFrame->qEdot;
     auto aC = partFrame->aC();
     auto pCpEtimesqEdot = EulerParameters<double>::pCpEtimesColumn(qEdot);
     pTpE = (pCpEtimesqEdot->transposeTimesFullColumn(aJ->timesFullColumn(aC->timesFullColumn(qEdot))))->times(4.0);
@@ -500,7 +516,7 @@ void Part::calcpTpE()
 
 void Part::calcppTpEpE()
 {
-    auto& qEdot = partFrame->qEdot;
+    auto &qEdot = partFrame->qEdot;
     auto pCpEtimesqEdot = EulerParameters<double>::pCpEtimesColumn(qEdot);
     auto a4J = aJ->times(4.0);
     ppTpEpE = pCpEtimesqEdot->transposeTimesFullMatrix(a4J->timesFullMatrix(pCpEtimesqEdot));
@@ -509,7 +525,7 @@ void Part::calcppTpEpE()
 void Part::calcppTpEpEdot()
 {
     //| qEdot aC a4J term1 pCpEtimesqEdot term2 |
-    auto& qEdot = partFrame->qEdot;
+    auto &qEdot = partFrame->qEdot;
     auto aC = partFrame->aC();
     auto a4J = aJ->times(4.0);
     auto term1 = EulerParameters<double>::pCTpEtimesColumn(a4J->timesFullColumn(aC->timesFullColumn(qEdot)));
@@ -526,7 +542,7 @@ void Part::calcmE()
 
 void Part::fillAccICIterError(FColDsptr col)
 {
-    //ToDo: Check for Units effect.
+    // ToDo: Check for Units effect.
     auto iqX = partFrame->iqX;
     auto iqE = partFrame->iqE;
     col->atiminusFullColumn(iqX, mX->timesFullColumn(partFrame->qXddot));
@@ -538,7 +554,7 @@ void Part::fillAccICIterError(FColDsptr col)
 
 void Part::fillAccICIterJacob(SpMatDsptr mat)
 {
-    //ToDo: Check for Units effect.
+    // ToDo: Check for Units effect.
     auto iqX = partFrame->iqX;
     auto iqE = partFrame->iqE;
     mat->atijminusDiagonalMatrix(iqX, iqX, mX);
@@ -559,25 +575,25 @@ void Part::setqsuddotlam(FColDsptr col)
 std::shared_ptr<StateData> Part::stateData()
 {
     //"
-    //P : = part frame.
-    //p : = principal frame at cm.
-    //rOcmO : = rOPO + aAOP * rPcmP.
-    //aAOp : = aAOP * aAPp.
-    //vOcmO : = vOPO + aAdotOP * rPcmP
+    // P : = part frame.
+    // p : = principal frame at cm.
+    // rOcmO : = rOPO + aAOP * rPcmP.
+    // aAOp : = aAOP * aAPp.
+    // vOcmO : = vOPO + aAdotOP * rPcmP
     //: = vOPO + (omeOPO cross : aAOP * rPcmP).
-    //omeOpO : = omeOPO.
-    //aOcmO : = aOPO + aAddotOP * rPcmP
+    // omeOpO : = omeOPO.
+    // aOcmO : = aOPO + aAddotOP * rPcmP
     //: = aOPO + (alpOPO cross : aAOP * rPcmP) + (omeOPO cross : (omeOPO cross : aAOP * rPcmP)).
-    //alpOpO : = alpOPO.
+    // alpOpO : = alpOPO.
 
-    //Therefore
-    //aAOP : = aAOp * aAPpT
-    //rOPO : = rOcmO - aAOP * rPcmP.
-    //omeOPO : = omeOpO.
-    //vOPO : = vOcmO - (omeOPO cross : aAOP * rPcmP).
-    //alpOPO : = alpOpO.
-    //aOPO : = aOcmO - (alpOPO cross : aAOP * rPcmP) - (omeOPO cross : (omeOPO cross :
-    //aAOP * rPcmP)).
+    // Therefore
+    // aAOP : = aAOp * aAPpT
+    // rOPO : = rOcmO - aAOP * rPcmP.
+    // omeOPO : = omeOpO.
+    // vOPO : = vOcmO - (omeOPO cross : aAOP * rPcmP).
+    // alpOPO : = alpOpO.
+    // aOPO : = aOcmO - (alpOPO cross : aAOP * rPcmP) - (omeOPO cross : (omeOPO cross :
+    // aAOP * rPcmP)).
     //"
 
     auto rOpO = qX();
@@ -641,7 +657,7 @@ void Part::postDynPredictor()
 void Part::fillDynError(FColDsptr col)
 {
     partFrame->fillDynError(col);
-    //ToDo: Check for Units effect.
+    // ToDo: Check for Units effect.
     col->atiplusFullColumn(ipX, pX->minusFullColumn(mX->timesFullColumn(partFrame->qXdot)));
     col->atiplusFullColumn(ipE, pE->minusFullColumn(mE->timesFullColumn(partFrame->qEdot)));
     col->atiminusFullColumn(partFrame->iqX, pXdot);
@@ -653,7 +669,7 @@ void Part::fillpFpy(SpMatDsptr mat)
     mat->atijplusDiagonalMatrix(ipX, ipX, DiagonalMatrix<double>::Identity3by3);
     mat->atijplusDiagonalMatrix(ipE, ipE, DiagonalMatrix<double>::Identity4by4);
     auto iqE = partFrame->iqE;
-    //ToDo: Check for Units effect.
+    // ToDo: Check for Units effect.
     mat->atijminusTransposeFullMatrix(ipE, iqE, ppTpEpEdot);
     mat->atijplusFullMatrix(iqE, iqE, ppTpEpE);
     partFrame->fillpFpy(mat);
@@ -661,15 +677,15 @@ void Part::fillpFpy(SpMatDsptr mat)
 
 void Part::fillpFpydot(SpMatDsptr mat)
 {
-        auto iqX = partFrame->iqX;
-        auto iqE = partFrame->iqE;
-        //ToDo: Check for Units effect.
-        mat->atijminusDiagonalMatrix(ipX, iqX, mX);
-        mat->atijminusFullMatrix(ipE, iqE, mE);
-        mat->atijminusDiagonalMatrix(iqX, ipX, DiagonalMatrix<double>::Identity3by3);
-        mat->atijminusDiagonalMatrix(iqE, ipE, DiagonalMatrix<double>::Identity4by4);
-        mat->atijplusFullMatrix(iqE, iqE, ppTpEpEdot);
-        partFrame->fillpFpydot(mat);
+    auto iqX = partFrame->iqX;
+    auto iqE = partFrame->iqE;
+    // ToDo: Check for Units effect.
+    mat->atijminusDiagonalMatrix(ipX, iqX, mX);
+    mat->atijminusFullMatrix(ipE, iqE, mE);
+    mat->atijminusDiagonalMatrix(iqX, ipX, DiagonalMatrix<double>::Identity3by3);
+    mat->atijminusDiagonalMatrix(iqE, ipE, DiagonalMatrix<double>::Identity4by4);
+    mat->atijplusFullMatrix(iqE, iqE, ppTpEpEdot);
+    partFrame->fillpFpydot(mat);
 }
 
 void Part::postDynCorrectorIteration()

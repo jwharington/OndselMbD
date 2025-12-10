@@ -10,13 +10,14 @@
 
 #include "ForceTorqueActionComp.h"
 
-namespace MbD {
+namespace MbD
+{
     class ForceTorqueActionKComp : public ForceTorqueActionComp
     {
         //
     public:
         static std::shared_ptr<ForceTorqueActionKComp> With();
-        
+
         void calcPostDynCorrectorIteration() override;
         void fillAccICIterError(FColDsptr col) override;
         void fillAccICIterJacob(SpMatDsptr mat) override;
@@ -28,14 +29,13 @@ namespace MbD {
         void forceOnFrmIandFrmJ(EndFrmsptr eFrmI, EndFrmsptr eFrmJ) override;
         void torqueOnFrmIandFrmJ(EndFrmsptr eFrmI, EndFrmsptr eFrmJ) override;
         FColDsptr getFTIeO() const override;
-        void forceOnFrmIwrtFrmKaxis(EndFrmsptr frmi, EndFrmsptr frmk, size_t axis);
-        void torqueOnFrmIwrtFrmKaxis(EndFrmsptr frmi, EndFrmsptr frmk, size_t axis);
+        void forceOnFrmIwrtFrmKaxis(EndFrmsptr frmi, EndFrmsptr frmk, size_t axis) override;
+        void torqueOnFrmIwrtFrmKaxis(EndFrmsptr frmi, EndFrmsptr frmk, size_t axis) override;
 
-        PartFrame* pfrmK;
+        PartFrame *pfrmK;
         FColDsptr aFTIeO;
         EndFrmsptr efrmK;
         FColDsptr aAjOKe;
-
 
         ForceTorqueActionKComp() = default;
     };

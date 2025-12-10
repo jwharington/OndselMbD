@@ -12,6 +12,7 @@
 #include <cmath>
 #include <sstream> 
 #include <iomanip>
+#include <fstream>
 
 namespace MbD {
     template<typename T>
@@ -32,7 +33,7 @@ namespace MbD {
                     if (i == 1) value = element;
                     i++;
                 }
-                insert(std::pair<const size_t, double>(index, value));
+		(*this)[index] = value; // insert(std::pair<const size_t, double>(index, value));
             }
         }
         //virtual ~SparseVector() {}

@@ -5,11 +5,11 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
-//#include <string>
-//#include <vector>
+// #include <string>
+// #include <vector>
 
 #include "FullColumn.h"
 #include "FullRow.h"
@@ -18,7 +18,8 @@
 #include "SparseMatrix.h"
 #include "enum.h"
 
-namespace MbD {
+namespace MbD
+{
     class System;
     class Constraint;
     class StateData;
@@ -27,15 +28,15 @@ namespace MbD {
 
     class Item : public std::enable_shared_from_this<Item>
     {
-        //name
+        // name
     public:
         virtual ~Item() = default;
         Item();
-        Item(const std::string& str) : name(str) {}
-        static std::shared_ptr<Item> With(const std::string& str);
+        Item(const std::string &str) : name(str) {}
+        static std::shared_ptr<Item> With(const std::string &str);
         virtual void initialize();
 
-        virtual System* root();
+        virtual System *root();
         void noop();
 
         virtual void calcPostDynCorrectorIteration();
@@ -79,16 +80,16 @@ namespace MbD {
         virtual void fillStaticJacob(SpMatDsptr mat);
         virtual void fillVelICError(FColDsptr col);
         virtual void fillVelICJacob(SpMatDsptr mat);
-        virtual void getString(const std::string& str);
+        virtual void getString(const std::string &str);
         virtual void initializeGlobally();
         virtual void initializeLocally();
         virtual bool isJointForce();
         virtual bool isJointTorque();
         virtual bool isKinedotIJ();
         virtual bool isKineIJ();
-        virtual void logString(const std::string& str);
-        virtual void logStringwithArgument(const std::string& str, const std::string& str1);
-        virtual void logStringwithArguments(const std::string& str, std::shared_ptr<std::vector<std::string&>> arrayOfChars);
+        virtual void logString(const std::string &str);
+        virtual void logStringwithArgument(const std::string &str, const std::string &str1);
+        virtual void logStringwithArguments(const std::string &str, std::shared_ptr<std::vector<std::string &>> arrayOfChars);
         virtual void normalImpulse(double imp);
         virtual void postAccIC();
         virtual void postAccICIteration();
@@ -155,20 +156,13 @@ namespace MbD {
         virtual EndFrmsptr geteFrmI() { return nullptr; }
         virtual EndFrmsptr geteFrmJ() { return nullptr; }
 
-        virtual std::ostream& printOn(std::ostream& s) const;
-        friend std::ostream& operator<<(std::ostream& s, const Item& item)
+        virtual std::ostream &printOn(std::ostream &s) const;
+        friend std::ostream &operator<<(std::ostream &s, const Item &item)
         {
-            if (&item) {
-                return item.printOn(s);
-            }
-            else {
-                s << "NULL";
-            }
-            return s;
+            return item.printOn(s);
         }
 
         std::string name;
-        Item* owner = nullptr;    //Use raw pointer when pointing backwards.
+        Item *owner = nullptr; // Use raw pointer when pointing backwards.
     };
 }
-

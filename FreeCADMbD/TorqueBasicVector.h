@@ -12,25 +12,26 @@
 
 #include "ForceTorqueBasic.h"
 
-namespace MbD {
+namespace MbD
+{
     class TorqueBasicVector : public ForceTorqueBasic
     {
         //
     public:
         static std::shared_ptr<TorqueBasicVector> With();
 
-        void calcPostDynCorrectorIteration();
+        void calcPostDynCorrectorIteration() override;
         void fillAccICIterErroraFTO(FColDsptr col, FColDsptr aFTO) override;
         void fillAccICIterJacobpFTOplam(SpMatDsptr mat, SpMatDsptr pFTOplam) override;
         void fillDynErroraFTO(FColDsptr col, FColDsptr aFTO) override;
         void fillpFpyaFTO(SpMatDsptr mat, FColDsptr aFTO) override;
-        void fillpFpypFTOpEjpartj(SpMatDsptr mat, FMatDsptr pFTOpEj, PartFrame* partj) override;
-        void fillpFpypFTOpXjpartj(SpMatDsptr mat, FMatDsptr pFTOpXj, PartFrame* partj) override;
-        void fillpFpypFTOpXjpFTOpEjpartj(SpMatDsptr mat, FMatDsptr pFTOpXj, FMatDsptr pFTOpEj, PartFrame* partj) override;
-        void fillpFpydotpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpEdotj, PartFrame* partj) override;
+        void fillpFpypFTOpEjpartj(SpMatDsptr mat, FMatDsptr pFTOpEj, PartFrame *partj) override;
+        void fillpFpypFTOpXjpartj(SpMatDsptr mat, FMatDsptr pFTOpXj, PartFrame *partj) override;
+        void fillpFpypFTOpXjpFTOpEjpartj(SpMatDsptr mat, FMatDsptr pFTOpXj, FMatDsptr pFTOpEj, PartFrame *partj) override;
+        void fillpFpydotpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpEdotj, PartFrame *partj) override;
         void fillpFpydotpFTOpmudot(SpMatDsptr mat, SpMatDsptr pFTOpmudot) override;
-        void fillpFpydotpFTOpXdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, PartFrame* partj) override;
-        void fillpFpydotpFTOpXdotjpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, FMatDsptr pFTOpEdotj, PartFrame* partj) override;
+        void fillpFpydotpFTOpXdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, PartFrame *partj) override;
+        void fillpFpydotpFTOpXdotjpFTOpEdotjpartj(SpMatDsptr mat, FMatDsptr pFTOpXdotj, FMatDsptr pFTOpEdotj, PartFrame *partj) override;
 
         FMatDsptr twoBT;
     };
