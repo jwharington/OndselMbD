@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "ASMTConstraintSet.h"
 #include "ASMTAssembly.h"
 #include "ASMTMarker.h"
@@ -36,7 +36,7 @@ void ASMTConstraintSet::createMbD()
 
 std::shared_ptr<ConstraintSet> ASMTConstraintSet::mbdClassNew()
 {
-    //Should not create abstract class.
+    // Should not create abstract class.
     throw SimulationStoppingError("To be implemented.");
     return std::shared_ptr<ConstraintSet>();
 }
@@ -44,11 +44,11 @@ std::shared_ptr<ConstraintSet> ASMTConstraintSet::mbdClassNew()
 void ASMTConstraintSet::updateFromMbD()
 {
     //"
-    //MbD returns aFIeO and aTIeO.
-    //GEO needs aFImO and aTImO.
-    //For Motion rImIeO is not zero and is changing.
-    //aFImO = aFIeO.
-    //aTImO = aTIeO + (rImIeO cross : aFIeO).
+    // MbD returns aFIeO and aTIeO.
+    // GEO needs aFImO and aTImO.
+    // For Motion rImIeO is not zero and is changing.
+    // aFImO = aFIeO.
+    // aTImO = aTIeO + (rImIeO cross : aFIeO).
     //"
     auto mbdUnts = mbdUnits();
     auto mbdJoint = std::static_pointer_cast<JointIJ>(mbdObject);
@@ -63,18 +63,19 @@ void ASMTConstraintSet::updateFromMbD()
 
 void ASMTConstraintSet::compareResults(AnalysisType)
 {
-    if (infxs == nullptr || infxs->empty()) return;
+    if (infxs == nullptr || infxs->empty())
+        return;
     auto mbdUnts = mbdUnits();
-    //auto factor = 1.0e-6;
-    //auto forceTol = mbdUnts->force * factor;
-    //auto torqueTol = mbdUnts->torque * factor;
-    //auto i = fxs->size() - 1;
-    //assert(Numeric::equaltol(fxs->at(i), infxs->at(i), forceTol));
-    //assert(Numeric::equaltol(fys->at(i), infys->at(i), forceTol));
-    //assert(Numeric::equaltol(fzs->at(i), infzs->at(i), forceTol));
-    //assert(Numeric::equaltol(txs->at(i), intxs->at(i), torqueTol));
-    //assert(Numeric::equaltol(tys->at(i), intys->at(i), torqueTol));
-    //assert(Numeric::equaltol(tzs->at(i), intzs->at(i), torqueTol));
+    // auto factor = 1.0e-6;
+    // auto forceTol = mbdUnts->force * factor;
+    // auto torqueTol = mbdUnts->torque * factor;
+    // auto i = fxs->size() - 1;
+    // assert(Numeric::equaltol(fxs->at(i), infxs->at(i), forceTol));
+    // assert(Numeric::equaltol(fys->at(i), infys->at(i), forceTol));
+    // assert(Numeric::equaltol(fzs->at(i), infzs->at(i), forceTol));
+    // assert(Numeric::equaltol(txs->at(i), intxs->at(i), torqueTol));
+    // assert(Numeric::equaltol(tys->at(i), intys->at(i), torqueTol));
+    // assert(Numeric::equaltol(tzs->at(i), intzs->at(i), torqueTol));
 }
 
 void ASMTConstraintSet::outputResults(AnalysisType)
@@ -84,5 +85,5 @@ void ASMTConstraintSet::outputResults(AnalysisType)
 
 void ASMTConstraintSet::updateFromInputState()
 {
-    //Do nothing.
+    // Do nothing.
 }

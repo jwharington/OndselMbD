@@ -5,18 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "QuasiIntegrator.h"
 
-namespace MbD {
+namespace MbD
+{
     class KineIntegrator : public QuasiIntegrator
     {
         //
     public:
         static std::shared_ptr<KineIntegrator> With();
-        
+
         void preRun() override;
         void firstStep() override;
         void subsequentSteps() override;
@@ -24,7 +25,6 @@ namespace MbD {
         void runInitialConditionTypeSolution() override;
         void iStep(size_t i) override;
         void selectOrder() override;
-        void useTrialStepStats(std::shared_ptr<SolverStatistics> stats);
+        void useTrialStepStats(std::shared_ptr<SolverStatistics> stats) override;
     };
 }
-

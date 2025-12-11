@@ -24,40 +24,40 @@ std::shared_ptr<ASMTItem> ASMTItem::With()
 
 void ASMTItem::initialize()
 {
-    //Subclass responsibility.
+    // Subclass responsibility.
     throw SimulationStoppingError("To be implemented.");
 }
 
 void ASMTItem::initializeGlobally()
 {
-    //Subclass responsibility.
+    // Subclass responsibility.
     throw SimulationStoppingError("To be implemented.");
 }
 
 void ASMTItem::initializeLocally()
 {
-    //Subclass responsibility.
+    // Subclass responsibility.
     throw SimulationStoppingError("To be implemented.");
 }
 
-ASMTAssembly* ASMTItem::root()
+ASMTAssembly *ASMTItem::root()
 {
     return owner->root();
 }
 
-ASMTSpatialContainer* ASMTItem::partOrAssembly()
+ASMTSpatialContainer *ASMTItem::partOrAssembly()
 {
     return owner->partOrAssembly();
 }
 
-ASMTPart* ASMTItem::part()
+ASMTPart *ASMTItem::part()
 {
     return owner->part();
 }
 
 void ASMTItem::noop()
 {
-    //No Operations
+    // No Operations
 }
 
 std::string ASMTItem::classname()
@@ -67,66 +67,68 @@ std::string ASMTItem::classname()
     return answer;
 }
 
-void ASMTItem::setName(const std::string& str)
+void ASMTItem::setName(const std::string &str)
 {
     name = str;
 }
 
-void ASMTItem::parseASMT(std::vector<std::string>&)
+void ASMTItem::parseASMT(std::vector<std::string> &)
 {
     throw SimulationStoppingError("To be implemented.");
 }
 
-std::string ASMTItem::popOffTop(std::vector<std::string>& args)
+std::string ASMTItem::popOffTop(std::vector<std::string> &args)
 {
-    auto str = args.at(0);    //Must copy string
+    auto str = args.at(0); // Must copy string
     args.erase(args.begin());
     return str;
 }
 
-std::string ASMTItem::readStringNoSpacesOffTop(std::vector<std::string>& args)
+std::string ASMTItem::readStringNoSpacesOffTop(std::vector<std::string> &args)
 {
-    //Return top string without whitespaces.
+    // Return top string without whitespaces.
     std::string str = popOffTop(args);
     str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
     return str;
 }
 
-FRowDsptr ASMTItem::readRowOfDoubles(const std::string& line)
+FRowDsptr ASMTItem::readRowOfDoubles(const std::string &line)
 {
     std::istringstream iss(line);
     auto readRowOfDoubles = FullRow<double>::With();
     double d;
-    while (iss >> d) {
+    while (iss >> d)
+    {
         readRowOfDoubles->push_back(d);
     }
     return readRowOfDoubles;
 }
 
-FRowDsptr ASMTItem::readRowOfDoublesOffTop(std::vector<std::string>& lines)
+FRowDsptr ASMTItem::readRowOfDoublesOffTop(std::vector<std::string> &lines)
 {
     auto str = popOffTop(lines);
     return readRowOfDoubles(str);
 }
 
-FColDsptr ASMTItem::readColumnOfDoubles(const std::string& line)
+FColDsptr ASMTItem::readColumnOfDoubles(const std::string &line)
 {
     std::istringstream iss(line);
     auto readColumnOfDoubles = FullColumn<double>::With();
     double d;
-    while (iss >> d) {
+    while (iss >> d)
+    {
         readColumnOfDoubles->push_back(d);
     }
     return readColumnOfDoubles;
 }
 
-FColDsptr ASMTItem::readColumnOfDoublesOffTop(std::vector<std::string>& lines)
+FColDsptr ASMTItem::readColumnOfDoublesOffTop(std::vector<std::string> &lines)
 {
     auto str = popOffTop(lines);
     return readColumnOfDoubles(str);
 }
 
-double ASMTItem::readDouble(const std::string& line)
+double ASMTItem::readDouble(const std::string &line)
 {
     std::istringstream iss(line);
     double d;
@@ -134,7 +136,7 @@ double ASMTItem::readDouble(const std::string& line)
     return d;
 }
 
-int ASMTItem::readInt(const std::string& line)
+int ASMTItem::readInt(const std::string &line)
 {
     std::istringstream iss(line);
     int i;
@@ -142,7 +144,7 @@ int ASMTItem::readInt(const std::string& line)
     return i;
 }
 
-size_t ASMTItem::readSize_t(const std::string& line)
+size_t ASMTItem::readSize_t(const std::string &line)
 {
     std::istringstream iss(line);
     size_t i;
@@ -150,48 +152,51 @@ size_t ASMTItem::readSize_t(const std::string& line)
     return i;
 }
 
-bool ASMTItem::readBool(const std::string& line)
+bool ASMTItem::readBool(const std::string &line)
 {
     if (line.find("true") != std::string::npos)
     {
         return true;
     }
-    else     if (line.find("false") != std::string::npos)
+    else if (line.find("false") != std::string::npos)
     {
         return false;
     }
-    else {
+    else
+    {
         throw SimulationStoppingError("To be implemented.");
         return false;
     }
 }
 
-std::string ASMTItem::readString(const std::string& line)
+std::string ASMTItem::readString(const std::string &line)
 {
-    //Read string without whitespaces.
+    // Read string without whitespaces.
     std::string str = line;
     str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
     return str;
 }
 
-void ASMTItem::readName(std::vector<std::string>& lines)
+void ASMTItem::readName(std::vector<std::string> &lines)
 {
     assert(readStringNoSpacesOffTop(lines) == "Name");
     name = readStringNoSpacesOffTop(lines);
 }
 
-std::string ASMTItem::fullName(const std::string& partialName)
+std::string ASMTItem::fullName(const std::string &partialName)
 {
     std::string longerName = "/" + name + partialName;
-    if (owner == nullptr) {
+    if (owner == nullptr)
+    {
         return longerName;
     }
-    else {
+    else
+    {
         return owner->fullName(longerName);
     }
 }
 
-void ASMTItem::readDoublesInto(std::string& str, std::string label, FRowDsptr& row)
+void ASMTItem::readDoublesInto(std::string &str, std::string label, FRowDsptr &row)
 {
     auto pos = str.find(label);
     assert(pos != std::string::npos);
@@ -251,12 +256,12 @@ std::shared_ptr<Constant> ASMTItem::sptrConstant(double value)
     return Constant::With(value);
 }
 
-void ASMTItem::storeOnLevel(std::ofstream&, size_t)
+void ASMTItem::storeOnLevel(std::ofstream &, size_t)
 {
     noop();
 }
 
-void ASMTItem::storeOnLevelTabs(std::ofstream& os, size_t level)
+void ASMTItem::storeOnLevelTabs(std::ofstream &os, size_t level)
 {
     for (size_t i = 0; i < level; i++)
     {
@@ -264,42 +269,44 @@ void ASMTItem::storeOnLevelTabs(std::ofstream& os, size_t level)
     }
 }
 
-void ASMTItem::storeOnLevelString(std::ofstream& os, size_t level, std::string str)
+void ASMTItem::storeOnLevelString(std::ofstream &os, size_t level, std::string str)
 {
     storeOnLevelTabs(os, level);
     os << str << std::endl;
 }
 
-void ASMTItem::storeOnLevelDouble(std::ofstream& os, size_t level, double value)
+void ASMTItem::storeOnLevelDouble(std::ofstream &os, size_t level, double value)
 {
     storeOnLevelTabs(os, level);
     os << value << std::endl;
 }
 
-void ASMTItem::storeOnLevelInt(std::ofstream& os, size_t level, int i)
+void ASMTItem::storeOnLevelInt(std::ofstream &os, size_t level, int i)
 {
     storeOnLevelTabs(os, level);
     os << i << std::endl;
 }
 
-void ASMTItem::storeOnLevelSize_t(std::ofstream& os, size_t level, size_t i)
+void ASMTItem::storeOnLevelSize_t(std::ofstream &os, size_t level, size_t i)
 {
     storeOnLevelTabs(os, level);
     os << i << std::endl;
 }
 
-void ASMTItem::storeOnLevelBool(std::ofstream& os, size_t level, bool value)
+void ASMTItem::storeOnLevelBool(std::ofstream &os, size_t level, bool value)
 {
     storeOnLevelTabs(os, level);
-    if (value) {
+    if (value)
+    {
         os << "true" << std::endl;
     }
-    else {
+    else
+    {
         os << "false" << std::endl;
     }
 }
 
-void ASMTItem::storeOnLevelArray(std::ofstream& os, size_t level, std::vector<double> array)
+void ASMTItem::storeOnLevelArray(std::ofstream &os, size_t level, std::vector<double> array)
 {
     storeOnLevelTabs(os, level);
     for (size_t i = 0; i < array.size(); i++)
@@ -309,18 +316,23 @@ void ASMTItem::storeOnLevelArray(std::ofstream& os, size_t level, std::vector<do
     os << std::endl;
 }
 
-void ASMTItem::storeOnLevelName(std::ofstream& os, size_t level)
+void ASMTItem::storeOnLevelName(std::ofstream &os, size_t level)
 {
     storeOnLevelString(os, level, "Name");
     storeOnLevelString(os, level + 1, name);
 }
 
-void ASMTItem::storeOnTimeSeries(std::ofstream&)
+void ASMTItem::storeOnTimeSeries(std::ofstream &)
 {
     throw SimulationStoppingError("To be implemented.");
 }
 
-void ASMTItem::logString(const std::string& str)
+void ASMTItem::logString(const std::string &str)
 {
     std::cout << str << std::endl;
+}
+
+void ASMTItem::updateForFrame([[maybe_unused]] size_t index)
+{
+    throw SimulationStoppingError("To be implemented.");
 }

@@ -5,15 +5,16 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
-//#include <vector>
+// #include <vector>
 
 #include "IntegratorInterface.h"
 #include "enum.h"
 
-namespace MbD {
+namespace MbD
+{
     class QuasiIntegrator : public IntegratorInterface
     {
         //
@@ -31,14 +32,12 @@ namespace MbD {
         double suggestSmallerOrAcceptFirstStepSize(double hnew) override;
         double suggestSmallerOrAcceptStepSize(double hnew) override;
         void incrementTime(double tnew) override;
-        void throwDiscontinuityError(const std::string& str, std::shared_ptr<std::vector<DiscontinuityType>> discontinuityTypes);
+        void throwDiscontinuityError(const std::string &str, std::shared_ptr<std::vector<DiscontinuityType>> discontinuityTypes);
         void checkForOutputThrough(double t) override;
         void interpolateAt(double t) override;
         void postStep() override;
         void postRun() override;
-        virtual void useTrialStepStats(std::shared_ptr<SolverStatistics> stats);
+        virtual void useTrialStepStats(std::shared_ptr<SolverStatistics> stats) override;
         void useQuasiStepStats(std::shared_ptr<SolverStatistics> stats) override;
-
     };
 }
-

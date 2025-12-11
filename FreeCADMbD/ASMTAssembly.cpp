@@ -1664,3 +1664,21 @@ void ASMTAssembly::updateFromInputState()
 	for (auto &motion : *motions)
 		motion->updateFromInputState();
 }
+
+void ASMTAssembly::updateForFrame(size_t index)
+{
+	ASMTSpatialContainer::updateForFrame(index);
+	for (auto &part : *parts)
+	{
+		part->updateForFrame(index);
+	}
+	// for (auto& joint : *joints) {
+	//     joint->updateForFrame(index);
+	// }
+	// for (auto& motion : *motions) {
+	//     motion->updateForFrame(index);
+	// }
+	// for (auto& forceTorque : *forcesTorques) {
+	//     forceTorque->updateForFrame(index);
+	// }
+}

@@ -5,18 +5,19 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "BasicIntegrator.h"
 
-namespace MbD {
+namespace MbD
+{
     class BasicQuasiIntegrator : public BasicIntegrator
     {
         //
     public:
         static std::shared_ptr<BasicQuasiIntegrator> With();
-        
+
         void firstStep() override;
         bool isRedoingFirstStep();
         void nextStep() override;
@@ -25,9 +26,7 @@ namespace MbD {
         void runInitialConditionTypeSolution() override;
         void selectFirstStepSize();
         void selectStepSize() override;
-        void postFirstStep();
-        void postStep();
-    
+        void postFirstStep() override;
+        void postStep() override;
     };
 }
-

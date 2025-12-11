@@ -131,6 +131,7 @@ namespace MbD
         void storeOnTimeSeries(std::ofstream &os) override;
         void setFilename(const std::string &str);
         void updateFromInputState() override;
+        void updateForFrame(size_t index) override;
 
         std::string filename = "";
         std::string notes = "(Text string: '' runs: (Core.RunArray runs: #() values: #()))";

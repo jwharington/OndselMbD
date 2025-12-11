@@ -6,7 +6,7 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
 #include <algorithm>
-#include <fstream>    
+#include <fstream>
 
 #include "ASMTSpatialContainer.h"
 #include "Units.h"
@@ -17,7 +17,6 @@
 #include "ASMTRefSurface.h"
 #include "PosVelAccData.h"
 #include "SimulationStoppingError.h"
-
 
 using namespace MbD;
 
@@ -59,21 +58,21 @@ void ASMTSpatialContainer::setPrincipalMassMarker(std::shared_ptr<ASMTPrincipalM
     principalMassMarker = aJ;
 }
 
-void ASMTSpatialContainer::readRefPoints(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readRefPoints(std::vector<std::string> &lines)
 {
     assert(readStringNoSpacesOffTop(lines) == "RefPoints");
     refPoints->clear();
-    auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
-        return s.find("RefCurves") != std::string::npos;
-        });
+    auto it = std::find_if(lines.begin(), lines.end(), [](const std::string &s)
+                           { return s.find("RefCurves") != std::string::npos; });
     std::vector<std::string> refPointsLines(lines.begin(), it);
-    while (!refPointsLines.empty()) {
+    while (!refPointsLines.empty())
+    {
         readRefPoint(refPointsLines);
     }
     lines.erase(lines.begin(), it);
 }
 
-void ASMTSpatialContainer::readRefPoint(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readRefPoint(std::vector<std::string> &lines)
 {
     assert(readStringNoSpacesOffTop(lines) == "RefPoint");
     auto refPoint = ASMTRefPoint::With();
@@ -82,164 +81,164 @@ void ASMTSpatialContainer::readRefPoint(std::vector<std::string>& lines)
     refPoints->push_back(refPoint);
 }
 
-void ASMTSpatialContainer::readRefCurves(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readRefCurves(std::vector<std::string> &lines)
 {
     assert(readStringNoSpacesOffTop(lines) == "RefCurves");
     refCurves->clear();
-    auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
-        return s.find("RefSurfaces") != std::string::npos;
-        });
+    auto it = std::find_if(lines.begin(), lines.end(), [](const std::string &s)
+                           { return s.find("RefSurfaces") != std::string::npos; });
     std::vector<std::string> refCurvesLines(lines.begin(), it);
-    while (!refCurvesLines.empty()) {
+    while (!refCurvesLines.empty())
+    {
         readRefCurve(refCurvesLines);
     }
     lines.erase(lines.begin(), it);
 }
 
-void ASMTSpatialContainer::readRefCurve(std::vector<std::string>&)
+void ASMTSpatialContainer::readRefCurve(std::vector<std::string> &)
 {
     throw SimulationStoppingError("To be implemented.");
 }
 
-void ASMTSpatialContainer::readRefSurfaces(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readRefSurfaces(std::vector<std::string> &lines)
 {
     assert(readStringNoSpacesOffTop(lines) == "RefSurfaces");
     refSurfaces->clear();
-    auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
-        return s.find("Part") != std::string::npos;
-        });
+    auto it = std::find_if(lines.begin(), lines.end(), [](const std::string &s)
+                           { return s.find("Part") != std::string::npos; });
     std::vector<std::string> refSurfacesLines(lines.begin(), it);
-    while (!refSurfacesLines.empty()) {
+    while (!refSurfacesLines.empty())
+    {
         readRefSurface(refSurfacesLines);
     }
     lines.erase(lines.begin(), it);
 }
 
-void ASMTSpatialContainer::readRefSurface(std::vector<std::string>&)
+void ASMTSpatialContainer::readRefSurface(std::vector<std::string> &)
 {
     throw SimulationStoppingError("To be implemented.");
 }
 
-void ASMTSpatialContainer::readXs(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readXs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "X", inxs);
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readYs(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readYs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "Y", inys);
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readZs(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readZs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "Z", inzs);
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readBryantxs(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readBryantxs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "Bryantx", inbryxs);
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readBryantys(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readBryantys(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "Bryanty", inbryys);
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readBryantzs(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readBryantzs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "Bryantz", inbryzs);
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readVXs(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readVXs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "VX", invxs);
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readVYs(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readVYs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "VY", invys);
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readVZs(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readVZs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "VZ", invzs);
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readOmegaXs(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readOmegaXs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "OmegaX", inomexs);
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readOmegaYs(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readOmegaYs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "OmegaY", inomeys);
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readOmegaZs(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readOmegaZs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "OmegaZ", inomezs);
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readAXs(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readAXs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "AX", inaxs);
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readAYs(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readAYs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "AY", inays);
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readAZs(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readAZs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "AZ", inazs);
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readAlphaXs(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readAlphaXs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "AlphaX", inalpxs);
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readAlphaYs(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readAlphaYs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "AlphaY", inalpys);
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readAlphaZs(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readAlphaZs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "AlphaZ", inalpzs);
@@ -248,7 +247,7 @@ void ASMTSpatialContainer::readAlphaZs(std::vector<std::string>& lines)
 
 void ASMTSpatialContainer::createMbD()
 {
-    //Create MbD in SI units
+    // Create MbD in SI units
     auto asmtUnts = asmtUnits();
     auto mbdPart = Part::With();
     mbdObject = mbdPart;
@@ -262,41 +261,44 @@ void ASMTSpatialContainer::createMbD()
     mbdPart->qXddot(std::make_shared<FullColumn<double>>(3, 0));
     mbdPart->qEddot(std::make_shared<FullColumn<double>>(4, 0));
     mbdSys()->addPart(mbdPart);
-    for (auto& refPoint : *refPoints) {
+    for (auto &refPoint : *refPoints)
+    {
         refPoint->createMbD();
     }
-    for (auto& refCurve : *refCurves) {
+    for (auto &refCurve : *refCurves)
+    {
         refCurve->createMbD();
     }
-    for (auto& refSurface : *refSurfaces) {
+    for (auto &refSurface : *refSurfaces)
+    {
         refSurface->createMbD();
     }
 }
 
-//void ASMTSpatialContainer::createMbD()
+// void ASMTSpatialContainer::createMbD()
 //{
-//    auto mbdPart = Part::With();
-//    mbdObject = mbdPart;
-//    mbdPart->name = fullName("");
-//    mbdPart->m = principalMassMarker->mass / mbdUnits()->mass;
-//    mbdPart->aJ = principalMassMarker->momentOfInertias->times(1.0 / mbdUnits()->aJ);
-//    mbdPart->qX(rOcmO()->times(1.0 / mbdUnits()->length));
-//    mbdPart->qE(qEp());
-//    mbdPart->qXdot(vOcmO()->times(1.0 / mbdUnits()->velocity));
-//    mbdPart->omeOpO(omeOpO()->times(1.0 / mbdUnits()->omega));
-//    mbdPart->qXddot(std::make_shared<FullColumn<double>>(3, 0));
-//    mbdPart->qEddot(std::make_shared<FullColumn<double>>(4, 0));
-//    mbdSys()->addPart(mbdPart);
-//    for (auto& refPoint : *refPoints) {
-//        refPoint->createMbD();
-//    }
-//    for (auto& refCurve : *refCurves) {
-//        refCurve->createMbD();
-//    }
-//    for (auto& refSurface : *refSurfaces) {
-//        refSurface->createMbD();
-//    }
-//}
+//     auto mbdPart = Part::With();
+//     mbdObject = mbdPart;
+//     mbdPart->name = fullName("");
+//     mbdPart->m = principalMassMarker->mass / mbdUnits()->mass;
+//     mbdPart->aJ = principalMassMarker->momentOfInertias->times(1.0 / mbdUnits()->aJ);
+//     mbdPart->qX(rOcmO()->times(1.0 / mbdUnits()->length));
+//     mbdPart->qE(qEp());
+//     mbdPart->qXdot(vOcmO()->times(1.0 / mbdUnits()->velocity));
+//     mbdPart->omeOpO(omeOpO()->times(1.0 / mbdUnits()->omega));
+//     mbdPart->qXddot(std::make_shared<FullColumn<double>>(3, 0));
+//     mbdPart->qEddot(std::make_shared<FullColumn<double>>(4, 0));
+//     mbdSys()->addPart(mbdPart);
+//     for (auto& refPoint : *refPoints) {
+//         refPoint->createMbD();
+//     }
+//     for (auto& refCurve : *refCurves) {
+//         refCurve->createMbD();
+//     }
+//     for (auto& refSurface : *refSurfaces) {
+//         refSurface->createMbD();
+//     }
+// }
 
 void ASMTSpatialContainer::updateMbDFromPosition3D(FColDsptr vec)
 {
@@ -305,19 +307,38 @@ void ASMTSpatialContainer::updateMbDFromPosition3D(FColDsptr vec)
     mbdPart->qX(rOcmO()->times(asmtUnits()->length));
 }
 
+void ASMTSpatialContainer::updateMbDFromRotationMatrix(FMatDsptr mat)
+{
+    rotationMatrix = mat;
+    auto mbdPart = std::static_pointer_cast<Part>(mbdObject);
+    auto mbdUnits = this->mbdUnits();
+    mbdPart->qX(rOcmO()->times(1.0 / mbdUnits->length));
+    mbdPart->qE(qEp());
+}
+
+void MbD::ASMTSpatialContainer::updateMbDFromRotationMatrix(double v11, double v12, double v13, double v21, double v22, double v23,
+                                                            double v31, double v32, double v33)
+{
+    auto rotMat = std::make_shared<FullMatrix<double>>(ListListD{
+        {v11, v12, v13},
+        {v21, v22, v23},
+        {v31, v32, v33}});
+    updateMbDFromRotationMatrix(rotMat);
+}
+
 FColDsptr ASMTSpatialContainer::rOcmO()
 {
-    auto& rOPO = position3D;
-    auto& aAOP = rotationMatrix;
-    auto& rPcmP = principalMassMarker->position3D;
+    auto &rOPO = position3D;
+    auto &aAOP = rotationMatrix;
+    auto &rPcmP = principalMassMarker->position3D;
     auto rOcmO = rOPO->plusFullColumn(aAOP->timesFullColumn(rPcmP));
     return rOcmO;
 }
 
 std::shared_ptr<EulerParameters<double>> ASMTSpatialContainer::qEp()
 {
-    auto& aAOP = rotationMatrix;
-    auto& aAPcm = principalMassMarker->rotationMatrix;
+    auto &aAOP = rotationMatrix;
+    auto &aAPcm = principalMassMarker->rotationMatrix;
     auto aAOcm = aAOP->timesFullMatrix(aAPcm);
     return aAOcm->asEulerParameters();
 }
@@ -334,7 +355,7 @@ FColDsptr ASMTSpatialContainer::omeOpO()
     return FColDsptr();
 }
 
-ASMTSpatialContainer* ASMTSpatialContainer::partOrAssembly()
+ASMTSpatialContainer *ASMTSpatialContainer::partOrAssembly()
 {
     return this;
 }
@@ -345,15 +366,15 @@ void ASMTSpatialContainer::updateFromMbD()
     auto mbdPart = std::static_pointer_cast<Part>(mbdObject);
     auto rOcmO = mbdPart->qX()->times(mbdUnts->length);
     auto aAOp = mbdPart->aAOp();
-    //std::cout << "aAOp" << *aAOp << std::endl;
+    // std::cout << "aAOp" << *aAOp << std::endl;
     auto vOcmO = mbdPart->qXdot()->times(mbdUnts->velocity);
     auto omeOPO = mbdPart->omeOpO()->times(mbdUnts->omega);
     omega3D = omeOPO;
     auto aOcmO = mbdPart->qXddot()->times(mbdUnts->acceleration);
     auto alpOPO = mbdPart->alpOpO()->times(mbdUnts->alpha);
     alpha3D = alpOPO;
-    auto& rPcmP = principalMassMarker->position3D;
-    auto& aAPp = principalMassMarker->rotationMatrix;
+    auto &rPcmP = principalMassMarker->position3D;
+    auto &aAPp = principalMassMarker->rotationMatrix;
     auto aAOP = aAOp->timesTransposeFullMatrix(aAPp);
     rotationMatrix = aAOP;
     auto rPcmO = aAOP->timesFullColumn(rPcmP);
@@ -370,7 +391,7 @@ void ASMTSpatialContainer::updateFromMbD()
     bryxs->push_back(bryantAngles->at(0));
     bryys->push_back(bryantAngles->at(1));
     bryzs->push_back(bryantAngles->at(2));
-    //std::cout << "bry " << *bryantAngles << std::endl;
+    // std::cout << "bry " << *bryantAngles << std::endl;
     vxs->push_back(vOPO->at(0));
     vys->push_back(vOPO->at(1));
     vzs->push_back(vOPO->at(2));
@@ -387,7 +408,8 @@ void ASMTSpatialContainer::updateFromMbD()
 
 void ASMTSpatialContainer::compareResults(AnalysisType)
 {
-    if (inxs == nullptr || inxs->empty()) return;
+    if (inxs == nullptr || inxs->empty())
+        return;
     auto mbdUnts = mbdUnits();
     auto factor = 1.0e-3;
     auto lengthTol = mbdUnts->length * factor;
@@ -397,68 +419,87 @@ void ASMTSpatialContainer::compareResults(AnalysisType)
     auto accelerationTol = mbdUnts->acceleration * factor;
     auto alphaTol = mbdUnts->alpha * factor;
     auto i = xs->size() - 1;
-    //Pos
-    if (!Numeric::equaltol(xs->at(i), inxs->at(i), lengthTol)) {
+    // Pos
+    if (!Numeric::equaltol(xs->at(i), inxs->at(i), lengthTol))
+    {
         std::cout << i << " xs " << xs->at(i) << " != " << inxs->at(i) << " tol = " << lengthTol << std::endl;
     }
-    if (!Numeric::equaltol(ys->at(i), inys->at(i), lengthTol)) {
+    if (!Numeric::equaltol(ys->at(i), inys->at(i), lengthTol))
+    {
         std::cout << i << " ys " << ys->at(i) << " != " << inys->at(i) << " tol = " << lengthTol << std::endl;
     }
-    if (!Numeric::equaltol(zs->at(i), inzs->at(i), lengthTol)) {
+    if (!Numeric::equaltol(zs->at(i), inzs->at(i), lengthTol))
+    {
         std::cout << i << " zs " << zs->at(i) << " != " << inzs->at(i) << " tol = " << lengthTol << std::endl;
     }
-    if (!Numeric::equaltol(bryxs->at(i), inbryxs->at(i), angleTol)) {
+    if (!Numeric::equaltol(bryxs->at(i), inbryxs->at(i), angleTol))
+    {
         std::cout << i << " bryxs " << bryxs->at(i) << " != " << inbryxs->at(i) << " tol = " << angleTol << std::endl;
     }
-    if (!Numeric::equaltol(bryys->at(i), inbryys->at(i), angleTol)) {
+    if (!Numeric::equaltol(bryys->at(i), inbryys->at(i), angleTol))
+    {
         std::cout << i << " bryys " << bryys->at(i) << " != " << inbryys->at(i) << " tol = " << angleTol << std::endl;
     }
-    if (!Numeric::equaltol(bryzs->at(i), inbryzs->at(i), angleTol)) {
+    if (!Numeric::equaltol(bryzs->at(i), inbryzs->at(i), angleTol))
+    {
         std::cout << i << " bryzs " << bryzs->at(i) << " != " << inbryzs->at(i) << " tol = " << angleTol << std::endl;
     }
-    //Vel
-    if (!Numeric::equaltol(vxs->at(i), invxs->at(i), velocityTol)) {
+    // Vel
+    if (!Numeric::equaltol(vxs->at(i), invxs->at(i), velocityTol))
+    {
         std::cout << i << " vxs " << vxs->at(i) << " != " << invxs->at(i) << " tol = " << velocityTol << std::endl;
     }
-    if (!Numeric::equaltol(vys->at(i), invys->at(i), velocityTol)) {
+    if (!Numeric::equaltol(vys->at(i), invys->at(i), velocityTol))
+    {
         std::cout << i << " vys " << vys->at(i) << " != " << invys->at(i) << " tol = " << velocityTol << std::endl;
     }
-    if (!Numeric::equaltol(vzs->at(i), invzs->at(i), velocityTol)) {
+    if (!Numeric::equaltol(vzs->at(i), invzs->at(i), velocityTol))
+    {
         std::cout << i << " vzs " << vzs->at(i) << " != " << invzs->at(i) << " tol = " << velocityTol << std::endl;
     }
-    if (!Numeric::equaltol(omexs->at(i), inomexs->at(i), omegaTol)) {
+    if (!Numeric::equaltol(omexs->at(i), inomexs->at(i), omegaTol))
+    {
         std::cout << i << " omexs " << omexs->at(i) << " != " << inomexs->at(i) << " tol = " << omegaTol << std::endl;
     }
-    if (!Numeric::equaltol(omeys->at(i), inomeys->at(i), omegaTol)) {
+    if (!Numeric::equaltol(omeys->at(i), inomeys->at(i), omegaTol))
+    {
         std::cout << i << " omeys " << omeys->at(i) << " != " << inomeys->at(i) << " tol = " << omegaTol << std::endl;
     }
-    if (!Numeric::equaltol(omezs->at(i), inomezs->at(i), omegaTol)) {
+    if (!Numeric::equaltol(omezs->at(i), inomezs->at(i), omegaTol))
+    {
         std::cout << i << " omezs " << omezs->at(i) << " != " << inomezs->at(i) << " tol = " << omegaTol << std::endl;
     }
-    //Acc
-    if (!Numeric::equaltol(axs->at(i), inaxs->at(i), accelerationTol)) {
+    // Acc
+    if (!Numeric::equaltol(axs->at(i), inaxs->at(i), accelerationTol))
+    {
         std::cout << i << " axs " << axs->at(i) << " != " << inaxs->at(i) << " tol = " << accelerationTol << std::endl;
     }
-    if (!Numeric::equaltol(ays->at(i), inays->at(i), accelerationTol)) {
+    if (!Numeric::equaltol(ays->at(i), inays->at(i), accelerationTol))
+    {
         std::cout << i << " ays " << ays->at(i) << " != " << inays->at(i) << " tol = " << accelerationTol << std::endl;
     }
-    if (!Numeric::equaltol(azs->at(i), inazs->at(i), accelerationTol)) {
+    if (!Numeric::equaltol(azs->at(i), inazs->at(i), accelerationTol))
+    {
         std::cout << i << " azs " << azs->at(i) << " != " << inazs->at(i) << " tol = " << accelerationTol << std::endl;
     }
-    if (!Numeric::equaltol(alpxs->at(i), inalpxs->at(i), alphaTol)) {
+    if (!Numeric::equaltol(alpxs->at(i), inalpxs->at(i), alphaTol))
+    {
         std::cout << i << " alpxs " << alpxs->at(i) << " != " << inalpxs->at(i) << " tol = " << alphaTol << std::endl;
     }
-    if (!Numeric::equaltol(alpys->at(i), inalpys->at(i), alphaTol)) {
+    if (!Numeric::equaltol(alpys->at(i), inalpys->at(i), alphaTol))
+    {
         std::cout << i << " alpys " << alpys->at(i) << " != " << inalpys->at(i) << " tol = " << alphaTol << std::endl;
     }
-    if (!Numeric::equaltol(alpzs->at(i), inalpzs->at(i), alphaTol)) {
+    if (!Numeric::equaltol(alpzs->at(i), inalpzs->at(i), alphaTol))
+    {
         std::cout << i << " alpzs " << alpzs->at(i) << " != " << inalpzs->at(i) << " tol = " << alphaTol << std::endl;
     }
 }
 
 void ASMTSpatialContainer::outputResults(AnalysisType)
 {
-    if (inxs != nullptr && !inxs->empty()) return;
+    if (inxs != nullptr && !inxs->empty())
+        return;
     auto i = xs->size() - 1;
     std::cout << i << " ";
     std::cout << xs->at(i) << ", " << ys->at(i) << ", " << zs->at(i) << ", ";
@@ -482,16 +523,19 @@ std::string ASMTSpatialContainer::generateUniqueMarkerName() const
 {
     auto aItemList = markerList();
     auto markerNames = std::vector<std::string>();
-    for (auto& mkr : *aItemList) {
+    for (auto &mkr : *aItemList)
+    {
         markerNames.push_back(mkr->name);
     }
     std::stringstream ss;
     auto count = 0;
-    while (true) {
+    while (true)
+    {
         ss.str("");
         ss << "Marker";
         ss << count;
-        if (std::find(markerNames.begin(), markerNames.end(), ss.str()) == markerNames.end()) break;
+        if (std::find(markerNames.begin(), markerNames.end(), ss.str()) == markerNames.end())
+            break;
         count++;
     }
     return ss.str();
@@ -500,14 +544,15 @@ std::string ASMTSpatialContainer::generateUniqueMarkerName() const
 std::shared_ptr<std::vector<std::shared_ptr<ASMTMarker>>> ASMTSpatialContainer::markerList() const
 {
     auto markers = std::make_shared<std::vector<std::shared_ptr<ASMTMarker>>>();
-    for (auto& refPoint : *refPoints) {
-        auto& refmarkers = refPoint->markers;
+    for (auto &refPoint : *refPoints)
+    {
+        auto &refmarkers = refPoint->markers;
         markers->insert(markers->end(), refmarkers->begin(), refmarkers->end());
     }
     return markers;
 }
 
-void ASMTSpatialContainer::storeOnLevel(std::ofstream& os, size_t level)
+void ASMTSpatialContainer::storeOnLevel(std::ofstream &os, size_t level)
 {
     ASMTSpatialItem::storeOnLevel(os, level);
     storeOnLevelVelocity(os, level + 1);
@@ -527,25 +572,27 @@ void ASMTSpatialContainer::setOmega3D(FColDsptr vec)
     omega3D = vec;
 }
 
-void ASMTSpatialContainer::readVelocity3D(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readVelocity3D(std::vector<std::string> &lines)
 {
     assert(readStringNoSpacesOffTop(lines) == "Velocity3D");
     std::istringstream iss(lines[0]);
     velocity3D = FullColumn<double>::With();
     double d;
-    while (iss >> d) {
+    while (iss >> d)
+    {
         velocity3D->push_back(d);
     }
     lines.erase(lines.begin());
 }
 
-void ASMTSpatialContainer::readOmega3D(std::vector<std::string>& lines)
+void ASMTSpatialContainer::readOmega3D(std::vector<std::string> &lines)
 {
     assert(readStringNoSpacesOffTop(lines) == "Omega3D");
     std::istringstream iss(lines[0]);
     omega3D = FullColumn<double>::With();
     double d;
-    while (iss >> d) {
+    while (iss >> d)
+    {
         omega3D->push_back(d);
     }
     lines.erase(lines.begin());
@@ -553,66 +600,70 @@ void ASMTSpatialContainer::readOmega3D(std::vector<std::string>& lines)
 
 void ASMTSpatialContainer::setVelocity3D(double a, double b, double c)
 {
-    velocity3D = std::make_shared<FullColumn<double>>(ListD{ a, b, c });
+    velocity3D = std::make_shared<FullColumn<double>>(ListD{a, b, c});
 }
 
 void ASMTSpatialContainer::setOmega3D(double a, double b, double c)
 {
-    omega3D = std::make_shared<FullColumn<double>>(ListD{ a, b, c });
+    omega3D = std::make_shared<FullColumn<double>>(ListD{a, b, c});
 }
 
-void ASMTSpatialContainer::storeOnLevelVelocity(std::ofstream& os, size_t level)
+void ASMTSpatialContainer::storeOnLevelVelocity(std::ofstream &os, size_t level)
 {
     storeOnLevelString(os, level, "Velocity3D");
-    if (vxs == nullptr || vxs->empty()) {
+    if (vxs == nullptr || vxs->empty())
+    {
         storeOnLevelArray(os, level + 1, *velocity3D);
     }
-    else {
+    else
+    {
         auto array = getVelocity3D(0);
         storeOnLevelArray(os, level + 1, *array);
     }
 }
 
-void ASMTSpatialContainer::storeOnLevelOmega(std::ofstream& os, size_t level)
+void ASMTSpatialContainer::storeOnLevelOmega(std::ofstream &os, size_t level)
 {
     storeOnLevelString(os, level, "Omega3D");
-    if (omexs == nullptr || omexs->empty()) {
+    if (omexs == nullptr || omexs->empty())
+    {
         storeOnLevelArray(os, level + 1, *omega3D);
     }
-    else {
+    else
+    {
         auto array = getOmega3D(0);
         storeOnLevelArray(os, level + 1, *array);
     }
 }
 
-void ASMTSpatialContainer::storeOnLevelRefPoints(std::ofstream& os, size_t level)
+void ASMTSpatialContainer::storeOnLevelRefPoints(std::ofstream &os, size_t level)
 {
     storeOnLevelString(os, level, "RefPoints");
-    for (auto& refPoint : *refPoints)
+    for (auto &refPoint : *refPoints)
     {
         refPoint->storeOnLevel(os, level + 1);
     }
 }
 
-void ASMTSpatialContainer::storeOnLevelRefCurves(std::ofstream& os, size_t level)
+void ASMTSpatialContainer::storeOnLevelRefCurves(std::ofstream &os, size_t level)
 {
     storeOnLevelString(os, level, "RefCurves");
-    for (auto& refCurve : *refCurves)
+    for (auto &refCurve : *refCurves)
     {
         refCurve->storeOnLevel(os, level);
     }
 }
 
-void ASMTSpatialContainer::storeOnLevelRefSurfaces(std::ofstream& os, size_t level)
+void ASMTSpatialContainer::storeOnLevelRefSurfaces(std::ofstream &os, size_t level)
 {
     storeOnLevelString(os, level, "RefSurfaces");
-    for (auto& refSurface : *refSurfaces)
+    for (auto &refSurface : *refSurfaces)
     {
         refSurface->storeOnLevel(os, level);
     }
 }
 
-void ASMTSpatialContainer::storeOnTimeSeries(std::ofstream& os)
+void ASMTSpatialContainer::storeOnTimeSeries(std::ofstream &os)
 {
     os << "X\t";
     for (size_t i = 0; i < xs->size(); i++)
@@ -748,34 +799,34 @@ void ASMTSpatialContainer::updateFromInputState()
     setRotationMatrix(getRotationMatrix(0));
     setVelocity3D(getVelocity3D(0));
     setOmega3D(getOmega3D(0));
-    for (auto& refPoint : *refPoints) {
+    for (auto &refPoint : *refPoints)
+    {
         refPoint->updateFromInputState();
     }
-
 }
 
 std::shared_ptr<StateData> ASMTSpatialContainer::dataFromMbD()
 {
     //"
-    //P := part frame. 
-    //p := principal frame at cm. 
-    //rOcmO := rOPO + aAOP*rPcmP. 
-    //aAOp := aAOP*aAPp. 
-    //vOcmO := vOPO + aAdotOP*rPcmP 
-    //:= vOPO + (omeOPO cross: aAOP*rPcmP). 
-    //omeOpO := omeOPO. 
-    //aOcmO := aOPO + aAddotOP*rPcmP 
-    //:= aOPO + (alpOPO cross: aAOP*rPcmP) + (omeOPO cross: (omeOPO cross: aAOP*rPcmP)). 
-    //alpOpO := alpOPO. 
+    // P := part frame.
+    // p := principal frame at cm.
+    // rOcmO := rOPO + aAOP*rPcmP.
+    // aAOp := aAOP*aAPp.
+    // vOcmO := vOPO + aAdotOP*rPcmP
+    //:= vOPO + (omeOPO cross: aAOP*rPcmP).
+    // omeOpO := omeOPO.
+    // aOcmO := aOPO + aAddotOP*rPcmP
+    //:= aOPO + (alpOPO cross: aAOP*rPcmP) + (omeOPO cross: (omeOPO cross: aAOP*rPcmP)).
+    // alpOpO := alpOPO.
     //
-    //Therefore 
-    //aAOP := aAOp*aAPpT 
-    //rOPO := rOcmO - aAOP*rPcmP. 
-    //omeOPO := omeOpO. 
-    //vOPO    := vOcmO - (omeOPO cross: aAOP*rPcmP). 
-    //alpOPO := alpOpO. 
-    //aOPO    := aOcmO - (alpOPO cross: aAOP*rPcmP) - (omeOPO cross: (omeOPO cross: 
-    //aAOP*rPcmP)). 
+    // Therefore
+    // aAOP := aAOp*aAPpT
+    // rOPO := rOcmO - aAOP*rPcmP.
+    // omeOPO := omeOpO.
+    // vOPO    := vOcmO - (omeOPO cross: aAOP*rPcmP).
+    // alpOPO := alpOpO.
+    // aOPO    := aOcmO - (alpOPO cross: aAOP*rPcmP) - (omeOPO cross: (omeOPO cross:
+    // aAOP*rPcmP)).
     //"
 
     auto answer = PosVelAccData::With();
@@ -816,4 +867,14 @@ FColDsptr ASMTSpatialContainer::aOPO()
 FColDsptr ASMTSpatialContainer::alpOPO()
 {
     return alpha3D;
+}
+
+void ASMTSpatialContainer::updateForFrame(size_t index)
+{
+    position3D = getPosition3D(index);
+    rotationMatrix = getRotationMatrix(index);
+    velocity3D = getVelocity3D(index);
+    omega3D = getOmega3D(index);
+    // TODO acceleration3D = getAcceleration3D(index);
+    // TODO alpha3D = getAlpha3D(index);
 }

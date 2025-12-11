@@ -10,7 +10,8 @@
 
 #include "BasicDAEIntegrator.h"
 
-namespace MbD {
+namespace MbD
+{
     class StableBackwardDifference;
     class StartingBasicDAEIntegrator;
 
@@ -30,7 +31,7 @@ namespace MbD {
         void settime(double t) override;
         void iStep(size_t i) override;
         void setorder(size_t o) override;
-        FColDsptr yDeriv(size_t order);
+        FColDsptr yDeriv(size_t order) override;
         FColDsptr dyOrderPlusOnedt() override;
         void run() override;
         void selectOrder() override;
@@ -40,4 +41,3 @@ namespace MbD {
         std::shared_ptr<StableBackwardDifference> opBDFhigher;
     };
 }
-

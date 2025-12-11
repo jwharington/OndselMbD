@@ -15,14 +15,15 @@
 #include "DAECorrector.h"
 #include "BackwardDifference.h"
 
-namespace MbD {
+namespace MbD
+{
     class BasicDAEIntegrator : public BasicIntegrator
     {
-        //y ydot dy ypast ydotpast aF pFpy pFpydot alp aG extrapolator newtonRaphson corAbsTol corRelTol corOK integAbsTol integRelTol truncError 
+        // y ydot dy ypast ydotpast aF pFpy pFpydot alp aG extrapolator newtonRaphson corAbsTol corRelTol corOK integAbsTol integRelTol truncError
     public:
         static std::shared_ptr<BasicDAEIntegrator> With();
         void initialize() override;
-        
+
         void initializeGlobally() override;
         void firstStep() override;
         bool isRedoingFirstStep();
@@ -60,8 +61,8 @@ namespace MbD {
         void calcTruncError();
         virtual FColDsptr dyOrderPlusOnedt();
         bool isConvergedForand(size_t iterNo, std::shared_ptr<std::vector<double>> dyNorms) const;
-        void postFirstStep();
-        void postStep();
+        void postFirstStep() override;
+        void postStep() override;
         void predict();
         void correct();
         void selectStepSizeNormal();

@@ -11,7 +11,8 @@
 #include "BasicDAEIntegrator.h"
 #include "StableStartingBDF.h"
 
-namespace MbD {
+namespace MbD
+{
     class StartingBasicDAEIntegrator : public BasicDAEIntegrator
     {
         //
@@ -26,7 +27,7 @@ namespace MbD {
         void setorder(size_t o) override;
         void settime(double t) override;
         void iStep(size_t i) override;
-        FColDsptr yDeriv(size_t order);
+        FColDsptr yDeriv(size_t order) override;
         FColDsptr dyOrderPlusOnedt() override;
         void run() override;
         void firstSteps();

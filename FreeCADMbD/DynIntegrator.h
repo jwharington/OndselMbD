@@ -8,19 +8,20 @@
 
 #pragma once
 
-//#include <vector>
+// #include <vector>
 
 #include "DAEIntegrator.h"
 #include "FullMatrix.h"
 #include "enum.h"
 
-namespace MbD {
+namespace MbD
+{
     class DynIntegrator : public DAEIntegrator
     {
         //
     public:
         static std::shared_ptr<DynIntegrator> With();
-        
+
         void assignEquationNumbers() override;
         void checkForDiscontinuity() override;
         void checkForOutputThrough(double t) override;
@@ -49,14 +50,12 @@ namespace MbD {
         void run() override;
         double suggestSmallerOrAcceptFirstStepSize(double hnew) override;
         double suggestSmallerOrAcceptStepSize(double hnew) override;
-        void updateForDAECorrector();
+        void updateForDAECorrector() override;
         void y(FColDsptr col) override;
         void ydot(FColDsptr col) override;
-        void throwDiscontinuityError(const std::string& str, std::shared_ptr<std::vector<DiscontinuityType>> discontinuityTypes);
-        void useTrialStepStats(std::shared_ptr<SolverStatistics> stats);
-        void useDAEStepStats(std::shared_ptr<SolverStatistics> stats);
+        void throwDiscontinuityError(const std::string &str, std::shared_ptr<std::vector<DiscontinuityType>> discontinuityTypes);
+        void useTrialStepStats(std::shared_ptr<SolverStatistics> stats) override;
+        void useDAEStepStats(std::shared_ptr<SolverStatistics> stats) override;
         void reportStats() override;
-
     };
 }
-
