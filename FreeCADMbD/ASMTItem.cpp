@@ -72,6 +72,11 @@ void ASMTItem::setName(const std::string &str)
     name = str;
 }
 
+void ASMTItem::setLabel(const std::string &str)
+{
+    label = str;
+}
+
 void ASMTItem::parseASMT(std::vector<std::string> &)
 {
     throw SimulationStoppingError("To be implemented.");

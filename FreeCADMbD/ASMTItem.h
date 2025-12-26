@@ -45,6 +45,7 @@ namespace MbD
         void noop();
         virtual std::string classname();
         void setName(const std::string &str);
+        void setLabel(const std::string &str);
         virtual void parseASMT(std::vector<std::string> &lines);
         std::string popOffTop(std::vector<std::string> &args);
         std::string readStringNoSpacesOffTop(std::vector<std::string> &args);
@@ -86,6 +87,7 @@ namespace MbD
         void logString(const std::string &str);
 
         std::string name;
+        std::string label;
         ASMTItem *owner = nullptr;
         std::shared_ptr<Item> mbdObject;
         std::shared_ptr<std::vector<std::shared_ptr<StateData>>> dataSeries = std::make_shared<std::vector<std::shared_ptr<StateData>>>();
