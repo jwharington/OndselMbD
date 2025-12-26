@@ -775,6 +775,24 @@ void ASMTSpatialContainer::storeOnTimeSeries(std::ofstream &os)
     os << std::endl;
 }
 
+FColDsptr ASMTSpatialContainer::getAcceleration3D(size_t i) const
+{
+    auto vec3 = std::make_shared<FullColumn<double>>(3);
+    vec3->atiput(0, axs->at(i));
+    vec3->atiput(1, ays->at(i));
+    vec3->atiput(2, azs->at(i));
+    return vec3;
+}
+
+FColDsptr ASMTSpatialContainer::getAlpha3D(size_t i) const
+{
+    auto vec3 = std::make_shared<FullColumn<double>>(3);
+    vec3->atiput(0, alpxs->at(i));
+    vec3->atiput(1, alpys->at(i));
+    vec3->atiput(2, alpzs->at(i));
+    return vec3;
+}
+
 FColDsptr ASMTSpatialContainer::getVelocity3D(size_t i) const
 {
     auto vec3 = std::make_shared<FullColumn<double>>(3);

@@ -96,6 +96,8 @@ namespace MbD
         void storeOnTimeSeries(std::ofstream &os) override;
         FColDsptr getVelocity3D(size_t i) const;
         FColDsptr getOmega3D(size_t i) const;
+        FColDsptr getAcceleration3D(size_t i) const;
+        FColDsptr getAlpha3D(size_t i) const;
         virtual void updateFromInputState();
         virtual void updateForFrame(size_t index) override;
         std::shared_ptr<StateData> dataFromMbD() override;
