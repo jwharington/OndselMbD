@@ -30,18 +30,19 @@ void ASMTForceTorque::updateFromMbD()
 
 void ASMTForceTorque::compareResults(AnalysisType)
 {
-    if (infxs == nullptr || infxs->empty()) return;
+    if (infxs == nullptr || infxs->empty())
+        return;
     auto mbdUnts = mbdUnits();
-    //auto factor = 1.0e-6;
-    //auto forceTol = mbdUnts->force * factor;
-    //auto torqueTol = mbdUnts->torque * factor;
-    //auto i = fxs->size() - 1;
-    //assert(Numeric::equaltol(fxs->at(i), infxs->at(i), forceTol));
-    //assert(Numeric::equaltol(fys->at(i), infys->at(i), forceTol));
-    //assert(Numeric::equaltol(fzs->at(i), infzs->at(i), forceTol));
-    //assert(Numeric::equaltol(txs->at(i), intxs->at(i), torqueTol));
-    //assert(Numeric::equaltol(tys->at(i), intys->at(i), torqueTol));
-    //assert(Numeric::equaltol(tzs->at(i), intzs->at(i), torqueTol));
+    // auto factor = 1.0e-6;
+    // auto forceTol = mbdUnts->force * factor;
+    // auto torqueTol = mbdUnts->torque * factor;
+    // auto i = fxs->size() - 1;
+    // assert(Numeric::equaltol(fxs->at(i), infxs->at(i), forceTol));
+    // assert(Numeric::equaltol(fys->at(i), infys->at(i), forceTol));
+    // assert(Numeric::equaltol(fzs->at(i), infzs->at(i), forceTol));
+    // assert(Numeric::equaltol(txs->at(i), intxs->at(i), torqueTol));
+    // assert(Numeric::equaltol(tys->at(i), intys->at(i), torqueTol));
+    // assert(Numeric::equaltol(tzs->at(i), intzs->at(i), torqueTol));
 }
 
 void ASMTForceTorque::outputResults(AnalysisType)
@@ -49,7 +50,7 @@ void ASMTForceTorque::outputResults(AnalysisType)
     throw SimulationStoppingError("To be implemented.");
 }
 
-void ASMTForceTorque::readForceTorqueSeries(std::vector<std::string>& lines)
+void ASMTForceTorque::readForceTorqueSeries(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     std::string substr = "ForceTorqueSeries";
@@ -67,12 +68,12 @@ void ASMTForceTorque::readForceTorqueSeries(std::vector<std::string>& lines)
     readTZonIs(lines);
 }
 
-void ASMTForceTorque::storeOnLevel(std::ofstream& os, size_t level)
+void ASMTForceTorque::storeOnLevel(std::ofstream &os, size_t level)
 {
     throw SimulationStoppingError("To be implemented.");
 }
 
-void ASMTForceTorque::storeOnTimeSeries(std::ofstream& os)
+void ASMTForceTorque::storeOnTimeSeries(std::ofstream &os)
 {
     std::string label = typeid(*this).name();
     label = label.substr(15, label.size() - 15);
@@ -82,7 +83,7 @@ void ASMTForceTorque::storeOnTimeSeries(std::ofstream& os)
 
 void ASMTForceTorque::createMbD()
 {
-    //Do nothing.
+    // Do nothing.
 }
 
 std::shared_ptr<ForceFunctionParser> ASMTForceTorque::functionParser()
@@ -92,7 +93,6 @@ std::shared_ptr<ForceFunctionParser> ASMTForceTorque::functionParser()
     parser->initVariables();
     parser->initgeoIJs();
     return parser;
-
 }
 
 bool ASMTForceTorque::isForceTorque()
@@ -107,5 +107,8 @@ std::shared_ptr<StateData> ASMTForceTorque::dataFromMbD()
     auto answer = ForceTorqueData::With();
     answer->aFIO = mbdItem->aFX()->times(mbdUnts->force);
     answer->aTIO = mbdItem->aTX()->times(mbdUnts->torque);
+    std::cout << "aFIO: " << mbdItem->aFX()->to_CSV() << std::endl
+              << std::flush;
+
     return answer;
 }

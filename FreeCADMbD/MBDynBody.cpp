@@ -30,7 +30,8 @@ void MBDynBody::parseMBDyn(std::string line)
     arguments = collectArgumentsFor("body", line);
     readLabel(arguments);
     nodeName = readStringNoSpacesOffTop(arguments);
-    if (arguments[0].find("condense") != std::string::npos) {
+    if (arguments[0].find("condense") != std::string::npos)
+    {
         arguments.erase(arguments.begin());
         auto str = readStringNoSpacesOffTop(arguments);
         auto num_masses = readInt(str);
@@ -40,12 +41,13 @@ void MBDynBody::parseMBDyn(std::string line)
             readMassProps(arguments);
         }
     }
-    else {
+    else
+    {
         readMassProps(arguments);
     }
 }
 
-void MBDynBody::readMass(std::vector<std::string>& args)
+void MBDynBody::readMass(std::vector<std::string> &args)
 {
     auto parser = std::make_shared<SymbolicParser>();
     parser->variables = mbdynVariables();
@@ -56,19 +58,20 @@ void MBDynBody::readMass(std::vector<std::string>& args)
     masses->push_back(mass);
 }
 
-void MBDynBody::readPositionCM(std::vector<std::string>& args)
+void MBDynBody::readPositionCM(std::vector<std::string> &args)
 {
     rPcmP = readPosition(args);
     rPcmPs->push_back(rPcmP);
 }
 
-void MBDynBody::readInertiaMatrix(std::vector<std::string>& args)
+void MBDynBody::readInertiaMatrix(std::vector<std::string> &args)
 {
     auto parser = std::make_shared<SymbolicParser>();
     parser->variables = mbdynVariables();
     aJmat = FullMatrix<double>::With(3, 3);
-    auto str = args.at(0);    //Must copy string
-    if (str.find("diag") != std::string::npos) {
+    auto str = args.at(0); // Must copy string
+    if (str.find("diag") != std::string::npos)
+    {
         args.erase(args.begin());
         for (size_t i = 0; i < 3; i++)
         {
@@ -78,23 +81,25 @@ void MBDynBody::readInertiaMatrix(std::vector<std::string>& args)
             aJmat->at(i)->at(i) = sym->getValue();
         }
     }
-    else if (str.find("eye") != std::string::npos) {
+    else if (str.find("eye") != std::string::npos)
+    {
         args.erase(args.begin());
         aJmat->identity();
     }
-    else {
+    else
+    {
         aJmat = readBasicOrientation(args);
     }
     aJmats->push_back(aJmat);
 }
 
-void MBDynBody::readOrientationCM(std::vector<std::string>& args)
+void MBDynBody::readOrientationCM(std::vector<std::string> &args)
 {
     aAPcm = readOrientation(args);
     aAPcms->push_back(aAPcm);
 }
 
-void MBDynBody::readMassProps(std::vector<std::string>& args)
+void MBDynBody::readMassProps(std::vector<std::string> &args)
 {
     readMass(args);
     readPositionCM(args);
@@ -104,17 +109,21 @@ void MBDynBody::readMassProps(std::vector<std::string>& args)
 
 void MBDynBody::createASMT()
 {
+    std::cout << "MBDynBody::createASMT\n"
+              << std::flush;
     auto asmtMassMarker = ASMTPrincipalMassMarker::With();
     asmtItem = asmtMassMarker;
     asmtMassMarker->setMass(mass);
-    if (aJmat->isDiagonalToWithin(1.0e-6)) {
+    if (aJmat->isDiagonalToWithin(1.0e-6))
+    {
         asmtMassMarker->setMomentOfInertias(aJmat->asDiagonalMatrix());
         asmtMassMarker->setPosition3D(rPcmP);
         asmtMassMarker->setRotationMatrix(aAPcm);
         auto asmtPart = asmtAssembly()->partPartialNamed(nodeName);
         asmtPart->setPrincipalMassMarker(asmtMassMarker);
     }
-    else {
+    else
+    {
         auto solver = std::make_shared<MomentOfInertiaSolver>();
         solver->setm(mass);
         solver->setJPP(aJmat);
