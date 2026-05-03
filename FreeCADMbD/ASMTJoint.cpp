@@ -13,6 +13,32 @@
 
 using namespace MbD;
 
+namespace {
+std::string jointTypeToken(const std::type_info& type)
+{
+    std::string token = type.name();
+
+    // Handles both demangled names (e.g. "MbD::ASMTGearJoint") and
+    // Itanium-mangled names (e.g. "N3MbD12ASMTGearJointE").
+    auto asmtPos = token.find("ASMT");
+    if (asmtPos != std::string::npos) {
+        token = token.substr(asmtPos + 4); // drop ASMT prefix
+    }
+
+    auto scopePos = token.rfind("::");
+    if (scopePos != std::string::npos) {
+        token = token.substr(scopePos + 2);
+    }
+
+    // Itanium mangling can leave a trailing 'E' after the class token.
+    if (!token.empty() && token.back() == 'E') {
+        token.pop_back();
+    }
+
+    return token;
+}
+}
+
 std::shared_ptr<ASMTJoint> ASMTJoint::With()
 {
     auto inst = std::make_shared<ASMTJoint>();
@@ -29,7 +55,7 @@ void ASMTJoint::readJointSeries(std::vector<std::string>& lines)
     str.erase(0, pos + substr.length());
     auto seriesName = readString(str);
     assert(fullName("") == seriesName);
-    lines.erase(lines.begin());
+    safePopFront(lines);
     readFXonIs(lines);
     readFYonIs(lines);
     readFZonIs(lines);
@@ -40,8 +66,7 @@ void ASMTJoint::readJointSeries(std::vector<std::string>& lines)
 
 void ASMTJoint::storeOnLevel(std::ofstream& os, size_t level)
 {
-    auto jointType = classname();
-    jointType = jointType.substr(4, jointType.size() - 4);    //Remove ASMT in name
+    auto jointType = jointTypeToken(typeid(*this));
     storeOnLevelString(os, level, jointType);
     storeOnLevelString(os, level + 1, "Name");
     storeOnLevelString(os, level + 2, name);
@@ -50,9 +75,7 @@ void ASMTJoint::storeOnLevel(std::ofstream& os, size_t level)
 
 void ASMTJoint::storeOnTimeSeries(std::ofstream& os)
 {
-    std::string label = typeid(*this).name();
-    label = label.substr(15, label.size() - 15);
-    os << label << "Series\t" << fullName("") << std::endl;
+    os << jointTypeToken(typeid(*this)) << "Series\t" << fullName("") << std::endl;
     ASMTItemIJ::storeOnTimeSeries(os);
 }
 
