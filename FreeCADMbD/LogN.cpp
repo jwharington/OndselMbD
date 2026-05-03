@@ -15,7 +15,6 @@ using namespace MbD;
 
 LogN::LogN(Symsptr arg) : FunctionX(arg)
 {
-    throw SimulationStoppingError("To be implemented.");
 }
 
 std::shared_ptr<LogN> LogN::With()

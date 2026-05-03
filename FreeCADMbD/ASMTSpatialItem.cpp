@@ -28,6 +28,10 @@ void ASMTSpatialItem::initialize()
 
 void ASMTSpatialItem::setPosition3D(FColDsptr vec)
 {
+    if (!vec) {
+        position3D = std::make_shared<FullColumn<double>>(ListD{ 0.0, 0.0, 0.0 });
+        return;
+    }
     position3D = vec;
 }
 
@@ -40,34 +44,49 @@ void ASMTSpatialItem::setQuarternions(double q0, double q1, double q2, double q3
 
 void ASMTSpatialItem::setRotationMatrix(FMatDsptr mat)
 {
+    if (!mat) {
+        rotationMatrix = FullMatrix<double>::With(ListListD{
+            { 1.0, 0.0, 0.0 },
+            { 0.0, 1.0, 0.0 },
+            { 0.0, 0.0, 1.0 }
+        });
+        return;
+    }
     rotationMatrix = mat;
 }
 
 void ASMTSpatialItem::readPosition3D(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "Position3D");
-    std::istringstream iss(lines[0]);
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "Position3D");}
+    auto posStr = std::move(lines.front()); // drain heap ptr and capture content
+    lines.erase(lines.begin());             // erase SSO-empty slot (no cascade)
+    std::istringstream iss(posStr);
     position3D = FullColumn<double>::With();
     double d;
     while (iss >> d) {
         position3D->push_back(d);
     }
-    lines.erase(lines.begin());
 }
 
 void ASMTSpatialItem::readRotationMatrix(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "RotationMatrix");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "RotationMatrix");}
     rotationMatrix = FullMatrix<double>::With(3, 0);
     for (size_t i = 0; i < 3; i++)
     {
+        if (lines.empty()) {
+            if (std::getenv("MBD_DEBUG_PARSE"))
+                std::cerr << "[readRotationMatrix] lines EMPTY at row " << i << std::endl;
+            break; // prevent UB — row will have 0 doubles which will fail downstream
+        }
         auto& row = rotationMatrix->at(i);
-        std::istringstream iss(lines[0]);
+        auto rowStr = std::move(lines.front()); // drain heap ptr first
+        lines.erase(lines.begin());              // erase SSO-empty slot (no cascade)
+        std::istringstream iss(rowStr);
         double d;
         while (iss >> d) {
             row->push_back(d);
         }
-        lines.erase(lines.begin());
     }
 }
 
@@ -114,7 +133,13 @@ void ASMTSpatialItem::storeOnLevelPosition(std::ofstream& os, size_t level)
 {
     storeOnLevelString(os, level, "Position3D");
     if (xs == nullptr || xs->empty()) {
-        storeOnLevelArray(os, level + 1, *position3D);
+        if (!position3D || position3D->size() < 3) {
+            auto zero = std::make_shared<FullColumn<double>>(ListD{ 0.0, 0.0, 0.0 });
+            storeOnLevelArray(os, level + 1, *zero);
+        }
+        else {
+            storeOnLevelArray(os, level + 1, *position3D);
+        }
     }
     else {
         auto array = getPosition3D(0);
@@ -126,9 +151,22 @@ void ASMTSpatialItem::storeOnLevelRotationMatrix(std::ofstream& os, size_t level
 {
     storeOnLevelString(os, level, "RotationMatrix");
     if (xs == nullptr || xs->empty()) {
-        for (size_t i = 0; i < 3; i++)
-        {
-            storeOnLevelArray(os, level + 1, *rotationMatrix->at(i));
+        if (!rotationMatrix || rotationMatrix->nrow() < 3) {
+            auto ident = FullMatrix<double>::With(ListListD{
+                { 1.0, 0.0, 0.0 },
+                { 0.0, 1.0, 0.0 },
+                { 0.0, 0.0, 1.0 }
+            });
+            for (size_t i = 0; i < 3; i++)
+            {
+                storeOnLevelArray(os, level + 1, *ident->at(i));
+            }
+        }
+        else {
+            for (size_t i = 0; i < 3; i++)
+            {
+                storeOnLevelArray(os, level + 1, *rotationMatrix->at(i));
+            }
         }
     }
     else {

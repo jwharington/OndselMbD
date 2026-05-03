@@ -132,13 +132,13 @@ Symsptr Symbolic::expandUntil(std::shared_ptr<std::unordered_set<Symsptr>> set)
 
 Symsptr Symbolic::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>>)
 {
-    throw SimulationStoppingError("To be implemented.");
+    // Safe default for leaf/base symbolic nodes.
     return sptr;
 }
 
 Symsptr Symbolic::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>>)
 {
-    throw SimulationStoppingError("To be implemented.");
+    // Safe default for leaf/base symbolic nodes.
     return sptr;
 }
 

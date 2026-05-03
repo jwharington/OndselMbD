@@ -496,20 +496,20 @@ void SymbolicParser::notify(std::string msg) const
     notifyat(msg, mark);
 }
 
-void SymbolicParser::notifyat(std::string, int) const
+void SymbolicParser::notifyat(std::string msg, int position) const
 {
-    //"Temporarily reset source in order to get full contents"
+    // Temporarily reset source in order to get full contents.
     auto p = source->tellg();
     source->seekg(0);
     auto contents = source->str();
     source->seekg(p);
-    throw SimulationStoppingError("To be implemented.");
-    //SyntaxErrorException new
-    //targetClass : class;
-    //messageText: aString;
-    //source: contents;
-    //position: position;
-    //raiseSignal
+
+    std::ostringstream os;
+    os << "Symbolic parser error: " << msg << " at position " << position;
+    if (!contents.empty()) {
+        os << " in expression: " << contents;
+    }
+    throw SimulationStoppingError(os.str());
 }
 
 void SymbolicParser::combineStackTo(size_t pos) const

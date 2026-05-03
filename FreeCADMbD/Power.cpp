@@ -10,13 +10,13 @@
 #include "Constant.h"
 #include "Ln.h"
 #include <cassert>
+#include <algorithm>
 #include "SimulationStoppingError.h"
 
 using namespace MbD;
 
 Power::Power(Symsptr bse, Symsptr ex) : FunctionXY(bse, ex)
 {
-    throw SimulationStoppingError("To be implemented.");
 }
 
 std::shared_ptr<Power> Power::With()
@@ -48,10 +48,22 @@ Symsptr Power::differentiateWRTy()
     return deriv->simplified();
 }
 
-Symsptr Power::simplifyUntil(Symsptr, std::shared_ptr<std::unordered_set<Symsptr>>)
+Symsptr Power::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
 {
-    throw SimulationStoppingError("To be implemented.");
-    return Symsptr();
+    auto itr = std::find_if(set->begin(), set->end(), [sptr](Symsptr sym) { return sptr.get() == sym.get(); });
+    if (itr != set->end()) return sptr;
+
+    auto newBase = x->simplifyUntil(x, set);
+    auto newExp = y->simplifyUntil(y, set);
+
+    if (newExp->isZero()) return sptrConstant(1.0);
+    if (newExp->isOne()) return newBase;
+
+    if (newBase->isConstant() && newExp->isConstant()) {
+        return sptrConstant(std::pow(newBase->getValue(), newExp->getValue()));
+    }
+
+    return std::make_shared<Power>(newBase, newExp);
 }
 
 double Power::getValue()

@@ -13,7 +13,6 @@ using namespace MbD;
 
 ArcTan::ArcTan(Symsptr arg) : FunctionX(arg)
 {
-    throw SimulationStoppingError("To be implemented.");
 }
 
 std::shared_ptr<ArcTan> ArcTan::With()

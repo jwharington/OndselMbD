@@ -14,7 +14,6 @@ using namespace MbD;
 
 FunctionXY::FunctionXY(Symsptr base, Symsptr exp) : x(base), y(exp)
 {
-    throw SimulationStoppingError("To be implemented.");
 }
 
 void FunctionXY::arguments(Symsptr args)

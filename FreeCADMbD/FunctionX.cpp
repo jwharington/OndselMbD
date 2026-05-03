@@ -32,7 +32,7 @@ void FunctionX::arguments(Symsptr args)
 
 Symsptr FunctionX::copyWith(Symsptr)
 {
-    throw SimulationStoppingError("To be implemented.");
+    throw SimulationStoppingError("Unsupported generic FunctionX::copyWith().");
     return Symsptr();
 }
 
@@ -76,7 +76,7 @@ Symsptr FunctionX::differentiateWRT(Symsptr var)
 Symsptr FunctionX::integrateWRT(Symsptr var)
 {
     //Integration is complex. Build up capabilities with time.
-    if (this == var.get()) throw SimulationStoppingError("To be implemented.");    //ToDo:
+    if (this == var.get()) throw SimulationStoppingError("Unsupported generic FunctionX self-integration.");
     auto simple = simplified();
     auto answer = std::make_shared<Integral>();
     answer->xx = var;
@@ -97,13 +97,13 @@ Symsptr FunctionX::integrateWRT(Symsptr var)
 
 Symsptr FunctionX::differentiateWRTx()
 {
-    throw SimulationStoppingError("To be implemented.");
+    throw SimulationStoppingError("Unsupported generic FunctionX::differentiateWRTx().");
     return Symsptr();
 }
 
 Symsptr FunctionX::integrateWRTx()
 {
-    throw SimulationStoppingError("To be implemented.");
+    throw SimulationStoppingError("Unsupported generic FunctionX::integrateWRTx().");
     return Symsptr();
 }
 
@@ -114,7 +114,7 @@ void FunctionX::createMbD()
 
 double FunctionX::getValue()
 {
-    throw SimulationStoppingError("To be implemented.");
+    throw SimulationStoppingError("Unsupported generic FunctionX::getValue().");
     return 0.0;
 }
 

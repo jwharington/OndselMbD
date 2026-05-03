@@ -15,7 +15,6 @@ using namespace MbD;
 
 Exponential::Exponential(Symsptr arg) : FunctionX(arg)
 {
-    throw SimulationStoppingError("To be implemented.");
 }
 
 std::shared_ptr<Exponential> Exponential::With()

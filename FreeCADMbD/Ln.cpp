@@ -15,7 +15,6 @@ using namespace MbD;
 
 Ln::Ln(Symsptr arg) : FunctionX(arg)
 {
-    throw SimulationStoppingError("To be implemented.");
 }
 
 std::shared_ptr<Ln> Ln::With()

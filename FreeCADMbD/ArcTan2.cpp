@@ -13,7 +13,6 @@ using namespace MbD;
 
 ArcTan2::ArcTan2(Symsptr arg, Symsptr arg1) : FunctionXY(arg, arg1)
 {
-    throw SimulationStoppingError("To be implemented.");
 }
 
 std::shared_ptr<ArcTan2> ArcTan2::With()

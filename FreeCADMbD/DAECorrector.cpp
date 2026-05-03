@@ -76,21 +76,16 @@ void DAECorrector::basicSolveEquations()
 }
 
 void DAECorrector::handleSingularMatrix()
-{    
-    std::string str = typeid(*matrixSolver).name();
-    if (str == "class GESpMatParPvMarkoFast") {
+{
+    if (std::dynamic_pointer_cast<GESpMatParPvMarkoFast>(matrixSolver)) {
         matrixSolver = GESpMatParPvPrecise::With();
         solveEquations();
+        return;
     }
-    else {
-        str = typeid(*matrixSolver).name();
-        if (str == "class GESpMatParPvPrecise") {
-            matrixSolver->throwSingularMatrixError("");
-        }
-        else {
-            throw SimulationStoppingError("To be implemented.");
-        }
-    }
+
+    // If already on the precise solver (or any other solver type), escalate as
+    // a singular-matrix condition rather than hitting a TODO stub path.
+    matrixSolver->throwSingularMatrixError("");
 }
 
 void DAECorrector::initializeGlobally()

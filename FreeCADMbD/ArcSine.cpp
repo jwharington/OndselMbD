@@ -13,7 +13,6 @@ using namespace MbD;
 
 ArcSine::ArcSine(Symsptr arg) : FunctionX(arg)
 {
-    throw SimulationStoppingError("To be implemented.");
 }
 
 std::shared_ptr<ArcSine> ArcSine::With()
