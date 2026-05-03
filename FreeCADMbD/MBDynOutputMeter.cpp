@@ -16,7 +16,7 @@ void MBDynOutputMeter::parseMBDyn(std::string line)
 {
     outputMeterString = line;
     arguments = collectArgumentsFor("output meter", line);
-    assert(readStringNoSpacesOffTop(arguments) == "string");
+    {auto _hdr = readStringNoSpacesOffTop(arguments); (void)_hdr; assert(_hdr == "string");}
     formula = popOffTop(arguments);
     formula = std::regex_replace(formula, std::regex("\""), "");
 }

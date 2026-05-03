@@ -24,9 +24,9 @@ void ASMTInPlaneJoint::readOffset(std::vector<std::string>& lines)
         offset = 0.0;
     }
     else {
-        lines.erase(lines.begin());
+        safePopFront(lines);
         offset = readDouble(lines[0]);
-        lines.erase(lines.begin());
+        safePopFront(lines);
     }
 }
 

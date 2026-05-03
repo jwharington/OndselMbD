@@ -37,13 +37,13 @@ void ASMTRotationalMotion::parseASMT(std::vector<std::string>& lines)
 
 void ASMTRotationalMotion::readMotionJoint(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "MotionJoint");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "MotionJoint");}
     motionJoint = readStringNoSpacesOffTop(lines);
 }
 
 void ASMTRotationalMotion::readRotationZ(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "RotationZ");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "RotationZ");}
     rotationZ = readStringNoSpacesOffTop(lines);
 }
 

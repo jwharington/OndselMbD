@@ -63,7 +63,8 @@ void MBDynReference::readOrientation(std::vector<std::string>& args)
     if (args.empty()) return;
     if (args[0].find("reference") != std::string::npos) {
         args.erase(args.begin());
-        assert(baseRefName == readStringNoSpacesOffTop(args));
+        auto refName = readStringNoSpacesOffTop(args);
+        assert(baseRefName == refName);
         aAFf = readBasicOrientation(args);
     }
     else if (args[0].find("hinge") != std::string::npos) {
@@ -80,7 +81,8 @@ void MBDynReference::readOrientation(std::vector<std::string>& args)
         args.erase(args.begin());
         if (args[0].find("reference") != std::string::npos) {
             args.erase(args.begin());
-            assert(baseRefName == readStringNoSpacesOffTop(args));
+            auto refName = readStringNoSpacesOffTop(args);
+            assert(baseRefName == refName);
             aAFf = readBasicOrientation(args);
         }
     }
@@ -102,7 +104,8 @@ void MBDynReference::readVelocity(std::vector<std::string>& args)
         args.erase(args.begin());
         if (args[0].find("reference") != std::string::npos) {
             args.erase(args.begin());
-            assert(baseRefName == readStringNoSpacesOffTop(args));
+            auto refName = readStringNoSpacesOffTop(args);
+            assert(baseRefName == refName);
             vFfF = readVector3(args);
         }
     }
@@ -124,7 +127,8 @@ void MBDynReference::readOmega(std::vector<std::string>& args)
         args.erase(args.begin());
         if (args[0].find("reference") != std::string::npos) {
             args.erase(args.begin());
-            assert(baseRefName == readStringNoSpacesOffTop(args));
+            auto refName = readStringNoSpacesOffTop(args);
+            assert(baseRefName == refName);
             omeFfF = readVector3(args);
         }
     }

@@ -39,11 +39,11 @@ void ASMTGeneralMotion::readrIJI(std::vector<std::string>& lines)
 {
     rIJI = std::make_shared<FullColumn<std::string>>(3);
 
-    assert(readStringNoSpacesOffTop(lines) == "rIJI1");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "rIJI1");}
     rIJI->at(0) = readStringNoSpacesOffTop(lines);
-    assert(readStringNoSpacesOffTop(lines) == "rIJI2");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "rIJI2");}
     rIJI->at(1) = readStringNoSpacesOffTop(lines);
-    assert(readStringNoSpacesOffTop(lines) == "rIJI3");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "rIJI3");}
     rIJI->at(2) = readStringNoSpacesOffTop(lines);
 }
 
@@ -51,24 +51,24 @@ void ASMTGeneralMotion::readangIJJ(std::vector<std::string>& lines)
 {
     angIJJ = std::make_shared<FullColumn<std::string>>(3);
 
-    assert(readStringNoSpacesOffTop(lines) == "angIJJ1");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "angIJJ1");}
     angIJJ->at(0) = readStringNoSpacesOffTop(lines);
-    assert(readStringNoSpacesOffTop(lines) == "angIJJ2");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "angIJJ2");}
     angIJJ->at(1) = readStringNoSpacesOffTop(lines);
-    assert(readStringNoSpacesOffTop(lines) == "angIJJ3");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "angIJJ3");}
     angIJJ->at(2) = readStringNoSpacesOffTop(lines);
 }
 
 void ASMTGeneralMotion::readRotationOrder(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "RotationOrder");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "RotationOrder");}
     std::istringstream iss(lines[0]);
     rotationOrder = std::make_shared<std::vector<size_t>>();
     size_t i;
     while (iss >> i) {
         rotationOrder->push_back(i);
     }
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 std::shared_ptr<ConstraintSet> ASMTGeneralMotion::mbdClassNew()

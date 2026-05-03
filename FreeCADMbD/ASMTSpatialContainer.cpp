@@ -63,7 +63,7 @@ void ASMTSpatialContainer::setPrincipalMassMarker(std::shared_ptr<ASMTPrincipalM
 
 void ASMTSpatialContainer::readRefPoints(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "RefPoints");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "RefPoints");}
     refPoints->clear();
     auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
         return s.find("RefCurves") != std::string::npos;
@@ -77,7 +77,7 @@ void ASMTSpatialContainer::readRefPoints(std::vector<std::string>& lines)
 
 void ASMTSpatialContainer::readRefPoint(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "RefPoint");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "RefPoint");}
     auto refPoint = ASMTRefPoint::With();
     refPoint->owner = this;
     refPoint->parseASMT(lines);
@@ -86,7 +86,7 @@ void ASMTSpatialContainer::readRefPoint(std::vector<std::string>& lines)
 
 void ASMTSpatialContainer::readRefCurves(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "RefCurves");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "RefCurves");}
     refCurves->clear();
     auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
         return s.find("RefSurfaces") != std::string::npos;
@@ -105,7 +105,7 @@ void ASMTSpatialContainer::readRefCurve(std::vector<std::string>&)
 
 void ASMTSpatialContainer::readRefSurfaces(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "RefSurfaces");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "RefSurfaces");}
     refSurfaces->clear();
     auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
         return s.find("Part") != std::string::npos;
@@ -126,126 +126,126 @@ void ASMTSpatialContainer::readXs(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "X", inxs);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readYs(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "Y", inys);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readZs(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "Z", inzs);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readBryantxs(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "Bryantx", inbryxs);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readBryantys(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "Bryanty", inbryys);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readBryantzs(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "Bryantz", inbryzs);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readVXs(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "VX", invxs);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readVYs(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "VY", invys);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readVZs(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "VZ", invzs);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readOmegaXs(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "OmegaX", inomexs);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readOmegaYs(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "OmegaY", inomeys);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readOmegaZs(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "OmegaZ", inomezs);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readAXs(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "AX", inaxs);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readAYs(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "AY", inays);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readAZs(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "AZ", inazs);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readAlphaXs(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "AlphaX", inalpxs);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readAlphaYs(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "AlphaY", inalpys);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readAlphaZs(std::vector<std::string>& lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "AlphaZ", inalpzs);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::createMbD()
@@ -586,26 +586,26 @@ void ASMTSpatialContainer::setOmega3D(FColDsptr vec)
 
 void ASMTSpatialContainer::readVelocity3D(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "Velocity3D");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "Velocity3D");}
     std::istringstream iss(lines[0]);
     velocity3D = FullColumn<double>::With();
     double d;
     while (iss >> d) {
         velocity3D->push_back(d);
     }
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::readOmega3D(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "Omega3D");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "Omega3D");}
     std::istringstream iss(lines[0]);
     omega3D = FullColumn<double>::With();
     double d;
     while (iss >> d) {
         omega3D->push_back(d);
     }
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTSpatialContainer::setVelocity3D(double a, double b, double c)

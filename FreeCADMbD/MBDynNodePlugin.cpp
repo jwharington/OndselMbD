@@ -14,7 +14,8 @@ void MBDynNodePlugin::parseMBDyn(std::string line)
 {
     pluginString = line;
     arguments = collectArgumentsFor("set", line);
-    assert(lineHasToken(readStringNoSpacesOffTop(arguments), "node"));
+    auto firstToken = readStringNoSpacesOffTop(arguments);
+    assert(lineHasToken(firstToken, "node"));
     varName = readStringNoSpacesOffTop(arguments);
     nodeName = readStringNoSpacesOffTop(arguments);
     readStringNoSpacesOffTop(arguments);

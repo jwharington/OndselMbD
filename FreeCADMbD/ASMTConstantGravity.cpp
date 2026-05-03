@@ -30,7 +30,7 @@ void ASMTConstantGravity::initialize()
 void ASMTConstantGravity::parseASMT(std::vector<std::string>& lines)
 {
     g = readColumnOfDoubles(lines[0]);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTConstantGravity::createMbD()

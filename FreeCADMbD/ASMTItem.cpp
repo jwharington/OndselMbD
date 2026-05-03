@@ -84,9 +84,20 @@ void ASMTItem::parseASMT(std::vector<std::string> &)
 
 std::string ASMTItem::popOffTop(std::vector<std::string> &args)
 {
-    auto str = args.at(0); // Must copy string
+    auto str = std::move(args.at(0)); // Move (not copy) to drain heap ptr before erase
     args.erase(args.begin());
     return str;
+}
+
+void ASMTItem::safePopFront(std::vector<std::string> &v)
+{
+    // Drain heap pointer from front element before erasing.
+    // Without this, vector::erase(begin()) can trigger cascade-swap UB:
+    // the old pointer of [0] propagates through non-SSO move-assigns and
+    // ends up freed when the last moved-from element is destroyed, which
+    // can land in adjacent allocations' redzones (ASAN heap-buffer-overflow).
+    { auto tmp = std::move(v.front()); (void)tmp; } // front() now SSO-empty
+    v.erase(v.begin());
 }
 
 std::string ASMTItem::readStringNoSpacesOffTop(std::vector<std::string> &args)
@@ -184,7 +195,7 @@ std::string ASMTItem::readString(const std::string &line)
 
 void ASMTItem::readName(std::vector<std::string> &lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "Name");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "Name");}
     name = readStringNoSpacesOffTop(lines);
 }
 

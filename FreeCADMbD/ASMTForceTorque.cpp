@@ -59,7 +59,7 @@ void ASMTForceTorque::readForceTorqueSeries(std::vector<std::string> &lines)
     str.erase(0, pos + substr.length());
     auto seriesName = readString(str);
     assert(fullName("") == seriesName);
-    lines.erase(lines.begin());
+    safePopFront(lines);
     readFXonIs(lines);
     readFYonIs(lines);
     readFZonIs(lines);

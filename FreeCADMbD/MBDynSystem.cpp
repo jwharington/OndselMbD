@@ -381,7 +381,8 @@ void MBDynSystem::parseMBDynNodes(std::vector<std::string>& lines)
 void MBDynSystem::parseMBDynElements(std::vector<std::string>& lines)
 {
 
-    assert(lineHasTokens(popOffTop(lines), "begin:", "elements"));
+    auto beginElements = popOffTop(lines);
+    assert(lineHasTokens(beginElements, "begin:", "elements"));
     bodies = std::make_shared<std::vector<std::shared_ptr<MBDynBody>>>();
     joints = std::make_shared<std::vector<std::shared_ptr<MBDynJoint>>>();
     plugins = std::make_shared<std::vector<std::shared_ptr<MBDynPlugin>>>();
@@ -462,7 +463,8 @@ void MBDynSystem::parseMBDynElements(std::vector<std::string>& lines)
         }
         break;
     }
-    assert(lineHasTokens(popOffTop(lines), "end:", "elements"));
+    auto endElements = popOffTop(lines);
+    assert(lineHasTokens(endElements, "end:", "elements"));
 }
 
 void MBDynSystem::parseMBDynVariables(std::vector<std::string>& lines)

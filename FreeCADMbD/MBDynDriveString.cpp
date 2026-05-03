@@ -12,7 +12,7 @@ std::shared_ptr<MBDynDriveString> MBDynDriveString::With()
 
 void MBDynDriveString::readFunction(std::vector<std::string>& args)
 {
-    assert(readStringNoSpacesOffTop(args) == "string");
+    {auto _hdr = readStringNoSpacesOffTop(args); (void)_hdr; assert(_hdr == "string");}
     expression = popOffTop(args);
     output = readStringNoSpacesOffTop(args);
     yesno = readStringNoSpacesOffTop(args);

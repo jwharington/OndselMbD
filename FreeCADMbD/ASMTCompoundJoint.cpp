@@ -32,9 +32,9 @@ void ASMTCompoundJoint::readDistanceIJ(std::vector<std::string>& lines)
         distanceIJ = 0.0;
     }
     else {
-        lines.erase(lines.begin());
+        safePopFront(lines);
         distanceIJ = readDouble(lines[0]);
-        lines.erase(lines.begin());
+        safePopFront(lines);
     }
 }
 

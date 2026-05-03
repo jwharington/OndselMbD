@@ -29,38 +29,38 @@ void ASMTPrincipalMassMarker::parseASMT(std::vector<std::string>& lines)
     size_t pos = lines[0].find_first_not_of("\t");
     auto leadingTabs = lines[0].substr(0, pos);
     assert(lines[0] == (leadingTabs + "Name"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     name = readStringNoSpacesOffTop(lines);
     assert(lines[0] == (leadingTabs + "Position3D"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     position3D = readColumnOfDoubles(lines[0]);
-    lines.erase(lines.begin());
+    safePopFront(lines);
     assert(lines[0] == (leadingTabs + "RotationMatrix"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     rotationMatrix = FullMatrix<double>::With(3);
     for (size_t i = 0; i < 3; i++)
     {
         auto row = readRowOfDoubles(lines[0]);
         rotationMatrix->atiput(i, row);
-        lines.erase(lines.begin());
+        safePopFront(lines);
     }
     assert(lines[0] == (leadingTabs + "Mass"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     mass = readDouble(lines[0]);
-    lines.erase(lines.begin());
+    safePopFront(lines);
     assert(lines[0] == (leadingTabs + "MomentOfInertias"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     momentOfInertias = DiagonalMatrix<double>::With(3);
     auto row = readRowOfDoubles(lines[0]);
-    lines.erase(lines.begin());
+    safePopFront(lines);
     for (size_t i = 0; i < 3; i++)
     {
         momentOfInertias->atiput(i, row->at(i));
     }
     assert(lines[0] == (leadingTabs + "Density"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     density = readDouble(lines[0]);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTPrincipalMassMarker::setMass(double m)

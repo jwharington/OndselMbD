@@ -47,14 +47,14 @@ void ASMTItemIJ::setMarkerJ(std::shared_ptr<ASMTMarker> mkrJ)
 
 void ASMTItemIJ::readMarkerI(std::vector<std::string> &lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "MarkerI");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "MarkerI");}
     auto markerName = readStringNoSpacesOffTop(lines);
     markerI = root()->markerAt(markerName);
 }
 
 void ASMTItemIJ::readMarkerJ(std::vector<std::string> &lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "MarkerJ");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "MarkerJ");}
     auto markerName = readStringNoSpacesOffTop(lines);
     markerJ = root()->markerAt(markerName);
 }
@@ -63,42 +63,42 @@ void ASMTItemIJ::readFXonIs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "FXonI", infxs);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTItemIJ::readFYonIs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "FYonI", infys);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTItemIJ::readFZonIs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "FZonI", infzs);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTItemIJ::readTXonIs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "TXonI", intxs);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTItemIJ::readTYonIs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "TYonI", intys);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTItemIJ::readTZonIs(std::vector<std::string> &lines)
 {
     std::string str = lines[0];
     readDoublesInto(str, "TZonI", intzs);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 }
 
 void ASMTItemIJ::storeOnLevel(std::ofstream &os, size_t level)

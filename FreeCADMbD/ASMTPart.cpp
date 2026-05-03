@@ -37,7 +37,7 @@ void ASMTPart::parseASMT(std::vector<std::string>& lines)
 
 void ASMTPart::readFeatureOrder(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "FeatureOrder");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "FeatureOrder");}
     //featureOrder = std::make_shared<std::vector<std::shared_ptr<ASMTRefPoint>>>();
     auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
         return s.find("PrincipalMassMarker") != std::string::npos;
@@ -45,7 +45,7 @@ void ASMTPart::readFeatureOrder(std::vector<std::string>& lines)
     //std::vector<std::string> featureOrderLines(lines.begin(), it);
     //while (!featureOrderLines.empty()) {
     //    if (featureOrderLines[0] == (leadingTabs + "\tExtrusion")) {
-    //        featureOrderLines.erase(featureOrderLines.begin());
+    //        safePopFront(featureOrderLines);
     //        auto extrusion = ASMTExtrusion::With();
     //        extrusion->owner = this;
     //        extrusion->parseASMT(featureOrderLines);
@@ -60,7 +60,7 @@ void ASMTPart::readFeatureOrder(std::vector<std::string>& lines)
 
 void ASMTPart::readPrincipalMassMarker(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "PrincipalMassMarker");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "PrincipalMassMarker");}
     principalMassMarker = ASMTPrincipalMassMarker::With();
     principalMassMarker->owner = this;
     principalMassMarker->parseASMT(lines);
@@ -75,7 +75,7 @@ void ASMTPart::readPartSeries(std::vector<std::string>& lines)
     str.erase(0, pos + substr.length());
     auto seriesName = readString(str);
     assert(fullName("") == seriesName);
-    lines.erase(lines.begin());
+    safePopFront(lines);
     //xs, ys, zs, bryxs, bryys, bryzs
     readXs(lines);
     readYs(lines);

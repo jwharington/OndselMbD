@@ -49,6 +49,9 @@ namespace MbD
         virtual void parseASMT(std::vector<std::string> &lines);
         std::string popOffTop(std::vector<std::string> &args);
         std::string readStringNoSpacesOffTop(std::vector<std::string> &args);
+        /** Drain heap pointer from front element before erasing to prevent
+         *  cascade-swap UB in vector<string>::erase(begin()). */
+        static void safePopFront(std::vector<std::string> &v);
         FRowDsptr readRowOfDoubles(const std::string &line);
         FRowDsptr readRowOfDoublesOffTop(std::vector<std::string> &lines);
         FColDsptr readColumnOfDoubles(const std::string &line);

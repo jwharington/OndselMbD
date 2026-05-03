@@ -34,29 +34,29 @@ void ASMTAnimationParameters::parseASMT(std::vector<std::string>& lines)
     auto pos = lines[0].find_first_not_of("\t");
     auto leadingTabs = lines[0].substr(0, pos);
     assert(lines[0] == (leadingTabs + "nframe"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     nframe = readSize_t(lines[0]);
-    lines.erase(lines.begin());
+    safePopFront(lines);
     assert(lines[0] == (leadingTabs + "icurrent"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     icurrent = readSize_t(lines[0]);
-    lines.erase(lines.begin());
+    safePopFront(lines);
     assert(lines[0] == (leadingTabs + "istart"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     istart = readSize_t(lines[0]);
-    lines.erase(lines.begin());
+    safePopFront(lines);
     assert(lines[0] == (leadingTabs + "iend"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     iend = readSize_t(lines[0]);
-    lines.erase(lines.begin());
+    safePopFront(lines);
     assert(lines[0] == (leadingTabs + "isForward"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     isForward = readBool(lines[0]);
-    lines.erase(lines.begin());
+    safePopFront(lines);
     assert(lines[0] == (leadingTabs + "framesPerSecond"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     framesPerSecond = readSize_t(lines[0]);
-    lines.erase(lines.begin());
+    safePopFront(lines);
 
 }
 

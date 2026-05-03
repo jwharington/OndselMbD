@@ -37,9 +37,9 @@ void ASMTScrewJoint::readPitch(std::vector<std::string>& lines)
         pitch = 0.0;
     }
     else {
-        lines.erase(lines.begin());
+        safePopFront(lines);
         pitch = readDouble(lines[0]);
-        lines.erase(lines.begin());
+        safePopFront(lines);
     }
 }
 

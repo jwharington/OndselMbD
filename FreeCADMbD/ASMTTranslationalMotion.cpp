@@ -54,13 +54,13 @@ std::shared_ptr<ConstraintSet> ASMTTranslationalMotion::mbdClassNew()
 
 void ASMTTranslationalMotion::readMotionJoint(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "MotionJoint");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "MotionJoint");}
     motionJoint = readStringNoSpacesOffTop(lines);
 }
 
 void ASMTTranslationalMotion::readTranslationZ(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "TranslationZ");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "TranslationZ");}
     translationZ = readStringNoSpacesOffTop(lines);
 }
 

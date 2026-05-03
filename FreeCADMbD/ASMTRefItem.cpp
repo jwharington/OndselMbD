@@ -26,12 +26,18 @@ void ASMTRefItem::addMarker(std::shared_ptr<ASMTMarker> marker)
 
 void ASMTRefItem::readMarkers(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "Markers");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "Markers");}
     markers->clear();
     auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
         return s.find("RefPoint") != std::string::npos;
         });
     std::vector<std::string> markersLines(lines.begin(), it);
+    // Phase-0 diagnostic: report if markersLines is surprisingly short
+    if (std::getenv("MBD_DEBUG_PARSE")) {
+        std::cerr << "[readMarkers] markersLines.size()=" << markersLines.size()
+                  << " first=" << (markersLines.empty() ? "(empty)" : markersLines.front().substr(0,40))
+                  << std::endl;
+    }
     while (!markersLines.empty()) {
         readMarker(markersLines);
     }
@@ -40,7 +46,7 @@ void ASMTRefItem::readMarkers(std::vector<std::string>& lines)
 
 void ASMTRefItem::readMarker(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "Marker");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "Marker");}
     auto marker = ASMTMarker::With();
     marker->owner = this;
     marker->parseASMT(lines);

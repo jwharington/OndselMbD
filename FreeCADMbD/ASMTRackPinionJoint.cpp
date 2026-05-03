@@ -37,9 +37,9 @@ void ASMTRackPinionJoint::readPitchRadius(std::vector<std::string>& lines)
         pitchRadius = 0.0;
     }
     else {
-        lines.erase(lines.begin());
+        safePopFront(lines);
         pitchRadius = readDouble(lines[0]);
-        lines.erase(lines.begin());
+        safePopFront(lines);
     }
 }
 

@@ -39,9 +39,9 @@ void ASMTGearJoint::readRadiusI(std::vector<std::string>& lines)
         radiusI = 0.0;
     }
     else {
-        lines.erase(lines.begin());
+        safePopFront(lines);
         radiusI = readDouble(lines[0]);
-        lines.erase(lines.begin());
+        safePopFront(lines);
     }
 }
 
@@ -51,9 +51,9 @@ void ASMTGearJoint::readRadiusJ(std::vector<std::string>& lines)
         radiusJ = 0.0;
     }
     else {
-        lines.erase(lines.begin());
+        safePopFront(lines);
         radiusJ = readDouble(lines[0]);
-        lines.erase(lines.begin());
+        safePopFront(lines);
     }
 }
 

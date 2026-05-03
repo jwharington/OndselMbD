@@ -180,7 +180,7 @@ void MBDynJoint::readFunction(std::vector<std::string>& args)
         args.erase(args.begin());
         auto vec3 = readVector3(args);
         assert(vec3->at(0) == 0 && vec3->at(1) == 0 && vec3->at(2) == 1);
-        assert(readStringNoSpacesOffTop(args) == "string");
+        {auto _hdr = readStringNoSpacesOffTop(args); (void)_hdr; assert(_hdr == "string");}
         formula = popOffTop(args);
         formula = std::regex_replace(formula, std::regex("\""), "");
     }
@@ -198,15 +198,15 @@ void MBDynJoint::readTotalJointFunction(std::vector<std::string>& args)
 {
     assert(lineHasTokens(args[0], "position", "constraint"));
     args.erase(args.begin());
-    assert(readStringNoSpacesOffTop(args) == "active");
-    assert(readStringNoSpacesOffTop(args) == "active");
-    assert(readStringNoSpacesOffTop(args) == "active");
-    assert(readStringNoSpacesOffTop(args) == "null");
+    {auto _hdr = readStringNoSpacesOffTop(args); (void)_hdr; assert(_hdr == "active");}
+    {auto _hdr = readStringNoSpacesOffTop(args); (void)_hdr; assert(_hdr == "active");}
+    {auto _hdr = readStringNoSpacesOffTop(args); (void)_hdr; assert(_hdr == "active");}
+    {auto _hdr = readStringNoSpacesOffTop(args); (void)_hdr; assert(_hdr == "null");}
     assert(lineHasTokens(args[0], "orientation", "constraint"));
     args.erase(args.begin());
-    assert(readStringNoSpacesOffTop(args) == "active");
-    assert(readStringNoSpacesOffTop(args) == "active");
-    assert(readStringNoSpacesOffTop(args) == "rotation");
+    {auto _hdr = readStringNoSpacesOffTop(args); (void)_hdr; assert(_hdr == "active");}
+    {auto _hdr = readStringNoSpacesOffTop(args); (void)_hdr; assert(_hdr == "active");}
+    {auto _hdr = readStringNoSpacesOffTop(args); (void)_hdr; assert(_hdr == "rotation");}
     readFunction(args);
 }
 

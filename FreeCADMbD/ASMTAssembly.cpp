@@ -415,7 +415,7 @@ std::shared_ptr<ASMTAssembly> ASMTAssembly::assemblyFromFile(const std::string &
 	bool bool1 = str == "freeCAD: 3D CAD with Motion Simulation  by  askoh.com";
 	bool bool2 = str == "OndselSolver";
 	assert(bool1 || bool2);
-	assert(assembly->readStringNoSpacesOffTop(lines) == "Assembly");
+	{auto _a = assembly->readStringNoSpacesOffTop(lines); (void)_a; assert(_a == "Assembly");}
 	assembly->setFilename(fileName);
 	assembly->parseASMT(lines);
 	return assembly;
@@ -428,7 +428,7 @@ void ASMTAssembly::runDynFile(const std::string &fileName)
 	std::string str("\n\n\nStarting DYNAMIC simulation");
 	assembly->logString(str);
 	assembly->setFilename(fileName);
-	assert(assembly->readStringNoSpacesOffTop(lines) == "Assembly");
+	{auto _a = assembly->readStringNoSpacesOffTop(lines); (void)_a; assert(_a == "Assembly");}
 	assembly->parseASMT(lines);
 	assembly->runDYNAMIC();
 }
@@ -440,7 +440,7 @@ void ASMTAssembly::runKineFile(const std::string &fileName)
 	std::string str("\n\n\nStarting KINEMATIC simulation");
 	assembly->logString(str);
 	assembly->setFilename(fileName);
-	assert(assembly->readStringNoSpacesOffTop(lines) == "Assembly");
+	{auto _a = assembly->readStringNoSpacesOffTop(lines); (void)_a; assert(_a == "Assembly");}
 	assembly->parseASMT(lines);
 	assembly->runKINEMATIC();
 }
@@ -465,7 +465,7 @@ std::vector<std::string> ASMTAssembly::linesFromFile(const std::string &fileName
 	bool bool1 = lines[0] == "freeCAD: 3D CAD with Motion Simulation  by  askoh.com";
 	bool bool2 = lines[0] == "OndselSolver";
 	assert(bool1 || bool2);
-	lines.erase(lines.begin());
+	safePopFront(lines);
 	return lines;
 }
 
@@ -485,11 +485,11 @@ void ASMTAssembly::readWriteKineFile(const std::string &fileName)
 	bool bool1 = lines[0] == "freeCAD: 3D CAD with Motion Simulation  by  askoh.com";
 	bool bool2 = lines[0] == "OndselSolver";
 	assert(bool1 || bool2);
-	lines.erase(lines.begin());
+	safePopFront(lines);
 
 	if (lines[0] == "Assembly")
 	{
-		lines.erase(lines.begin());
+		safePopFront(lines);
 		auto assembly = ASMTAssembly::With();
 		assembly->parseASMT(lines);
 		assembly->runKINEMATIC();
@@ -514,11 +514,11 @@ void ASMTAssembly::readWriteDynFile(const std::string &fileName)
 	bool bool1 = lines[0] == "freeCAD: 3D CAD with Motion Simulation  by  askoh.com";
 	bool bool2 = lines[0] == "OndselSolver";
 	assert(bool1 || bool2);
-	lines.erase(lines.begin());
+	safePopFront(lines);
 
 	if (lines[0] == "Assembly")
 	{
-		lines.erase(lines.begin());
+		safePopFront(lines);
 		auto assembly = ASMTAssembly::With();
 		assembly->parseASMT(lines);
 		assembly->runDYNAMIC();
@@ -581,14 +581,14 @@ void ASMTAssembly::parseASMT(std::vector<std::string> &lines)
 void ASMTAssembly::readNotes(std::vector<std::string> &lines)
 {
 	assert(lines[0] == "\tNotes");
-	lines.erase(lines.begin());
+	safePopFront(lines);
 	notes = readStringNoSpacesOffTop(lines);
 }
 
 void ASMTAssembly::readParts(std::vector<std::string> &lines)
 {
 	assert(lines[0] == "\tParts");
-	lines.erase(lines.begin());
+	safePopFront(lines);
 	parts->clear();
 	auto it = std::find(lines.begin(), lines.end(), "\tKinematicIJs");
 	std::vector<std::string> partsLines(lines.begin(), it);
@@ -602,7 +602,7 @@ void ASMTAssembly::readParts(std::vector<std::string> &lines)
 void ASMTAssembly::readPart(std::vector<std::string> &lines)
 {
 	assert(lines[0] == "\t\tPart");
-	lines.erase(lines.begin());
+	safePopFront(lines);
 	auto part = ASMTPart::With();
 	part->owner = this;
 	part->parseASMT(lines);
@@ -612,7 +612,7 @@ void ASMTAssembly::readPart(std::vector<std::string> &lines)
 void ASMTAssembly::readKinematicIJs(std::vector<std::string> &lines)
 {
 	assert(lines[0] == "\tKinematicIJs");
-	lines.erase(lines.begin());
+	safePopFront(lines);
 	kinematicIJs->clear();
 	auto it = std::find(lines.begin(), lines.end(), "\tConstraintSets");
 	std::vector<std::string> kinematicIJsLines(lines.begin(), it);
@@ -631,7 +631,7 @@ void ASMTAssembly::readKinematicIJ(std::vector<std::string> &)
 void ASMTAssembly::readConstraintSets(std::vector<std::string> &lines)
 {
 	assert(lines[0] == "\tConstraintSets");
-	lines.erase(lines.begin());
+	safePopFront(lines);
 	readJoints(lines);
 	readMotions(lines);
 	readLimits(lines);
@@ -641,7 +641,7 @@ void ASMTAssembly::readConstraintSets(std::vector<std::string> &lines)
 void ASMTAssembly::readJoints(std::vector<std::string> &lines)
 {
 	assert(lines[0] == "\t\tJoints");
-	lines.erase(lines.begin());
+	safePopFront(lines);
 	joints->clear();
 	auto it = std::find(lines.begin(), lines.end(), "\t\tMotions");
 	std::vector<std::string> jointsLines(lines.begin(), it);
@@ -744,7 +744,7 @@ void ASMTAssembly::readJoints(std::vector<std::string> &lines)
 		{
 			throw SimulationStoppingError("To be implemented.");
 		}
-		jointsLines.erase(jointsLines.begin());
+		safePopFront(jointsLines);
 		joint->owner = this;
 		joint->parseASMT(jointsLines);
 		joints->push_back(joint);
@@ -755,7 +755,7 @@ void ASMTAssembly::readJoints(std::vector<std::string> &lines)
 void ASMTAssembly::readMotions(std::vector<std::string> &lines)
 {
 	assert(lines[0] == "\t\tMotions");
-	lines.erase(lines.begin());
+	safePopFront(lines);
 	motions->clear();
 	auto it = std::find(lines.begin(), lines.end(), "\t\tLimits");
 	if (it == lines.end())
@@ -786,7 +786,7 @@ void ASMTAssembly::readMotions(std::vector<std::string> &lines)
 		{
 			throw SimulationStoppingError("To be implemented.");
 		}
-		motionsLines.erase(motionsLines.begin());
+		safePopFront(motionsLines);
 		motion->owner = this;
 		motion->parseASMT(motionsLines);
 		motions->push_back(motion);
@@ -801,7 +801,7 @@ void ASMTAssembly::readLimits(std::vector<std::string> &lines)
 	{
 		return;
 	}
-	lines.erase(lines.begin());
+	safePopFront(lines);
 	limits->clear();
 	auto it = std::find(lines.begin(), lines.end(), "\t\tGeneralConstraintSets");
 	std::vector<std::string> limitsLines(lines.begin(), it);
@@ -820,7 +820,7 @@ void ASMTAssembly::readLimits(std::vector<std::string> &lines)
 		{
 			throw SimulationStoppingError("To be implemented.");
 		}
-		limitsLines.erase(limitsLines.begin());
+		safePopFront(limitsLines);
 		limit->parseASMT(limitsLines);
 		limits->push_back(limit);
 		limit->owner = this;
@@ -832,7 +832,7 @@ void ASMTAssembly::readLimits(std::vector<std::string> &lines)
 void ASMTAssembly::readGeneralConstraintSets(std::vector<std::string> &lines) const
 {
 	assert(lines[0] == "\t\tGeneralConstraintSets");
-	lines.erase(lines.begin());
+	safePopFront(lines);
 	constraintSets->clear();
 	auto it = std::find(lines.begin(), lines.end(), "\tForceTorques");
 	std::vector<std::string> generalConstraintSetsLines(lines.begin(), it);
@@ -846,7 +846,7 @@ void ASMTAssembly::readGeneralConstraintSets(std::vector<std::string> &lines) co
 void ASMTAssembly::readForcesTorques(std::vector<std::string> &lines)
 {
 	assert(lines[0] == "\tForceTorques"); // Spelling is not consistent in asmt file.
-	lines.erase(lines.begin());
+	safePopFront(lines);
 	forcesTorques->clear();
 	auto it = std::find(lines.begin(), lines.end(), "\tConstantGravity");
 	std::vector<std::string> forcesTorquesLines(lines.begin(), it);
@@ -866,7 +866,7 @@ void ASMTAssembly::readForcesTorques(std::vector<std::string> &lines)
 			throw SimulationStoppingError("To be implemented.");
 		}
 
-		forcesTorquesLines.erase(forcesTorquesLines.begin());
+		safePopFront(forcesTorquesLines);
 		forceTorque->owner = this;
 		forceTorque->parseASMT(forcesTorquesLines);
 		forcesTorques->push_back(forceTorque);
@@ -877,7 +877,7 @@ void ASMTAssembly::readForcesTorques(std::vector<std::string> &lines)
 void ASMTAssembly::readConstantGravity(std::vector<std::string> &lines)
 {
 	assert(lines[0] == "\tConstantGravity");
-	lines.erase(lines.begin());
+	safePopFront(lines);
 	constantGravity = ASMTConstantGravity::With();
 	constantGravity->owner = this;
 	constantGravity->parseASMT(lines);
@@ -886,7 +886,7 @@ void ASMTAssembly::readConstantGravity(std::vector<std::string> &lines)
 void ASMTAssembly::readSimulationParameters(std::vector<std::string> &lines)
 {
 	assert(lines[0] == "\tSimulationParameters");
-	lines.erase(lines.begin());
+	safePopFront(lines);
 	simulationParameters = ASMTSimulationParameters::With();
 	simulationParameters->owner = this;
 	simulationParameters->parseASMT(lines);
@@ -895,7 +895,7 @@ void ASMTAssembly::readSimulationParameters(std::vector<std::string> &lines)
 void ASMTAssembly::readAnimationParameters(std::vector<std::string> &lines)
 {
 	assert(lines[0] == "\tAnimationParameters");
-	lines.erase(lines.begin());
+	safePopFront(lines);
 	animationParameters = ASMTAnimationParameters::With();
 	animationParameters->owner = this;
 	animationParameters->parseASMT(lines);
@@ -940,9 +940,9 @@ void ASMTAssembly::readTimeSeries(std::vector<std::string> &lines)
 {
 	if (lines.empty())
 		return;
-	assert(readStringNoSpacesOffTop(lines) == "TimeSeries");
+	{auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "TimeSeries");}
 	assert(lines[0].find("Number\tInput") != std::string::npos);
-	lines.erase(lines.begin());
+	safePopFront(lines);
 	readTimes(lines);
 }
 
@@ -966,7 +966,7 @@ void ASMTAssembly::readTimes(std::vector<std::string> &lines)
 		// Duplicate time0.
 		itimes->insert(itimes->begin(), itimes->at(0));
 	}
-	lines.erase(lines.begin());
+	safePopFront(lines);
 }
 
 void ASMTAssembly::readPartSeriesMany(std::vector<std::string> &lines)
@@ -1010,7 +1010,7 @@ void ASMTAssembly::readAssemblySeries(std::vector<std::string> &lines)
 	str.erase(0, pos + substr.length());
 	auto seriesName = readString(str);
 	assert(fullName("") == seriesName);
-	lines.erase(lines.begin());
+	safePopFront(lines);
 	// xs, ys, zs, bryxs, bryys, bryzs
 	readXs(lines);
 	readYs(lines);
@@ -1118,23 +1118,23 @@ void ASMTAssembly::runDraggingLog(const std::string &fileName)
 	{
 		lines.push_back(line);
 	}
-	assert(readStringNoSpacesOffTop(lines) == "runPreDrag");
+	{auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "runPreDrag");}
 	runPreDrag();
 	while (lines[0].find("runDragStep") != std::string::npos)
 	{
-		assert(readStringNoSpacesOffTop(lines) == "runDragStep");
+		{auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "runDragStep");}
 		auto dragParts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
 		while (lines[0].find("Name") != std::string::npos)
 		{
-			assert(readStringNoSpacesOffTop(lines) == "Name");
+			{auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "Name");}
 			auto dragPartName = readStringNoSpacesOffTop(lines);
 			std::string longerName = "/" + name + "/" + dragPartName;
 			auto dragPart = partAt(longerName);
 			dragParts->push_back(dragPart);
-			assert(readStringNoSpacesOffTop(lines) == "Position3D");
+			{auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "Position3D");}
 			auto dragPartPosition3D = readColumnOfDoublesOffTop(lines);
 			dragPart->setPosition3D(dragPartPosition3D);
-			assert(readStringNoSpacesOffTop(lines) == "RotationMatrix");
+			{auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "RotationMatrix");}
 			auto dragPartRotationMatrix = std::make_shared<FullMatrix<double>>(3);
 			for (size_t i = 0; i < 3; i++)
 			{
@@ -1145,7 +1145,7 @@ void ASMTAssembly::runDraggingLog(const std::string &fileName)
 		}
 		runDragStep(dragParts);
 	}
-	assert(readStringNoSpacesOffTop(lines) == "runPostDrag");
+	{auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "runPostDrag");}
 	runPostDrag();
 }
 

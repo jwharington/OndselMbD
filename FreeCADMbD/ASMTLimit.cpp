@@ -44,25 +44,25 @@ void ASMTLimit::storeOnLevel(std::ofstream& os, size_t level)
 
 void ASMTLimit::readMotionJoint(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "MotionJoint");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "MotionJoint");}
     motionJoint = readStringNoSpacesOffTop(lines);
 }
 
 void ASMTLimit::readLimit(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "Limit");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "Limit");}
     limit = readStringNoSpacesOffTop(lines);
 }
 
 void ASMTLimit::readType(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "Type");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "Type");}
     type = readStringNoSpacesOffTop(lines);
 }
 
 void ASMTLimit::readTol(std::vector<std::string>& lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "Tol");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "Tol");}
     tol = readStringNoSpacesOffTop(lines);
 }
 

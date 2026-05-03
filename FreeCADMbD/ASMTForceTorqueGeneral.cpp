@@ -119,42 +119,42 @@ void ASMTForceTorqueGeneral::parseASMT(std::vector<std::string> &lines)
 
 void ASMTForceTorqueGeneral::readFxOnI(std::vector<std::string> &lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "FxOnI");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "FxOnI");}
     aFIeKe->atiput(0, popOffTop(lines));
 }
 
 void ASMTForceTorqueGeneral::readFyOnI(std::vector<std::string> &lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "FyOnI");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "FyOnI");}
     aFIeKe->atiput(1, popOffTop(lines));
 }
 
 void ASMTForceTorqueGeneral::readFzOnI(std::vector<std::string> &lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "FzOnI");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "FzOnI");}
     aFIeKe->atiput(2, popOffTop(lines));
 }
 
 void ASMTForceTorqueGeneral::readTxOnI(std::vector<std::string> &lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "TxOnI");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "TxOnI");}
     aTIeKe->atiput(0, popOffTop(lines));
 }
 
 void ASMTForceTorqueGeneral::readTyOnI(std::vector<std::string> &lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "TyOnI");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "TyOnI");}
     aTIeKe->atiput(1, popOffTop(lines));
 }
 
 void ASMTForceTorqueGeneral::readTzOnI(std::vector<std::string> &lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "TzOnI");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "TzOnI");}
     aTIeKe->atiput(2, popOffTop(lines));
 }
 
 void ASMTForceTorqueGeneral::readMarkerKSign(std::vector<std::string> &lines)
 {
-    assert(readStringNoSpacesOffTop(lines) == "MarkerK");
+    {auto _hdr = readStringNoSpacesOffTop(lines); (void)_hdr; assert(_hdr == "MarkerK");}
     markerKSign = readStringNoSpacesOffTop(lines);
 }

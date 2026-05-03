@@ -12,7 +12,7 @@ std::shared_ptr<MBDynDriveCosine> MBDynDriveCosine::With()
 
 void MBDynDriveCosine::readFunction(std::vector<std::string>& args)
 {
-    assert(readStringNoSpacesOffTop(args) == "cosine");
+    {auto _hdr = readStringNoSpacesOffTop(args); (void)_hdr; assert(_hdr == "cosine");}
     std::string initial_time, angular_velocity, amplitude, number_of_cycles, initial_value;
     initial_time = popOffTop(args);
     angular_velocity = popOffTop(args);

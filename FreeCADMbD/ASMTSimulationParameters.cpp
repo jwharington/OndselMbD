@@ -29,29 +29,29 @@ void ASMTSimulationParameters::parseASMT(std::vector<std::string>& lines)
     size_t pos = lines[0].find_first_not_of("\t");
     auto leadingTabs = lines[0].substr(0, pos);
     assert(lines[0] == (leadingTabs + "tstart"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     tstart = readDouble(lines[0]);
-    lines.erase(lines.begin());
+    safePopFront(lines);
     assert(lines[0] == (leadingTabs + "tend"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     tend = readDouble(lines[0]);
-    lines.erase(lines.begin());
+    safePopFront(lines);
     assert(lines[0] == (leadingTabs + "hmin"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     hmin = readDouble(lines[0]);
-    lines.erase(lines.begin());
+    safePopFront(lines);
     assert(lines[0] == (leadingTabs + "hmax"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     hmax = readDouble(lines[0]);
-    lines.erase(lines.begin());
+    safePopFront(lines);
     assert(lines[0] == (leadingTabs + "hout"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     hout = readDouble(lines[0]);
-    lines.erase(lines.begin());
+    safePopFront(lines);
     assert(lines[0] == (leadingTabs + "errorTol"));
-    lines.erase(lines.begin());
+    safePopFront(lines);
     seterrorTol(readDouble(lines[0]));
-    lines.erase(lines.begin());
+    safePopFront(lines);
 
 }
 
