@@ -37,6 +37,9 @@ x64/
 assembly.asmt
 
 build
+build-asan
+build-exe-asan
+build-debug
 cmake-build-debug
 .idea
 *.7z
