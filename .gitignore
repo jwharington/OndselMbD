@@ -36,11 +36,11 @@ x64/
 *.bak
 assembly.asmt
 
-build
-build-asan
-build-exe-asan
-build-debug
-cmake-build-debug
+build/
+build-asan/
+build-exe-asan/
+build-debug/
+cmake-build-debug/
 .idea
 *.7z
 LibreSpace/
@@ -51,3 +51,4 @@ temp/
 *.mp4
 /testapp/draggingBackhoe.log
 /testapp/runPreDragBackhoe.asmt
+.agents/
